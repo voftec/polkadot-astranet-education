@@ -103,6 +103,8 @@ project/
 5. Track your transaction history
 6. Earn achievements as you learn
 
+User progress is stored under each account at `users/{uid}/polkadot-astranet-education/progress` in Firebase Realtime Database. If no progress record exists, the application automatically initializes this node to `0` upon login.
+
 ## Configuration
 
 ### Firebase Configuration

@@ -1,0 +1,40 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
+        "chatHistory": {
+          ".indexOn": ["createdAt", "lastActivity"],
+          "$chatId": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && ((newData.exists() && newData.child('participants/' + auth.uid).exists()) || (data.exists() && data.child('participants/' + auth.uid).exists()))",
+            "messages": {
+              "$messageId": {
+                ".read": "auth != null && auth.uid == $uid",
+                ".write": "auth != null && auth.uid == $uid && newData.child('sender').val() == auth.uid && root.child('users/' + $uid + '/chatHistory/' + $chatId + '/participants/' + auth.uid).exists()"
+              }
+            },
+            "name": { ".validate": "newData.isString()" },
+            "lastActivity": { ".validate": "newData.isNumber() || newData.val() == now" },
+            "lastMessagePreview": { ".validate": "newData.isString()" }
+          }
+        }
+      }
+    },
+    "astranet-assistant": {
+      "chatHistory": {
+        ".indexOn": ["createdAt", "lastActivity"],
+        "$chatId": {
+          ".read": "auth != null && data.child('participants/' + auth.uid).exists()",
+          ".write": "auth != null && ((newData.exists() && newData.child('participants/' + auth.uid).exists()) || (data.exists() && data.child('participants/' + auth.uid).exists()))"
+        }
+      }
+    },
+    "admins": {
+      "$uid": {
+        ".read": "auth != null"
+      }
+    }
+  }
+}
