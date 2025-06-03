@@ -29,7 +29,7 @@ class PolkadotConnector {
     try {
       // Dynamic import using stable versions for Polkadot libraries
       // Use a recent version of the Polkadot API to support modern runtime features
-      const { ApiPromise, WsProvider } = await import('https://cdn.jsdelivr.net/npm/@polkadot/api@16/+esm');
+      const { ApiPromise, WsProvider } = await import('https://cdn.jsdelivr.net/npm/@polkadot/api@16.1.1/+esm');
       
       console.log(`Connecting to Polkadot network at ${this.networkEndpoint}...`);
       
@@ -189,7 +189,7 @@ class PolkadotConnector {
 
     // Using stable version for extension-dapp
     // Keep extension-dapp in sync with the API for compatibility
-    const { web3Enable, web3Accounts } = await import('https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.59/+esm');
+    const { web3Enable, web3Accounts } = await import('https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.59.1/+esm');
     
     const extensions = await web3Enable('Astranet Education Demo');
     if (extensions.length === 0) {
@@ -740,7 +740,7 @@ class PolkadotConnector {
           ]);
 
           const exposure = exposureOpt.isSome ? exposureOpt.unwrap() : { total: BigInt(0), own: BigInt(0), others: [] };
-          const prefs = prefsOpt.isSome ? prefsOpt.unwrap() : { commission: BigInt(0) }; // commission is Perbill
+          const prefs = prefsOpt.isSome ? prefsOpt.unwrap() : { commission: 0n }; // commission is Perbill
           
           let blocksProduced = 0;
           if (authoredBlocksOpt && authoredBlocksOpt.isSome) {
@@ -752,7 +752,12 @@ class PolkadotConnector {
             stakedAmount: exposure.total.toString(),
             ownStake: exposure.own.toString(),
             nominatorCount: exposure.others.length,
-            commission: (prefs.commission.toNumber() / 10_000_000).toFixed(2), // Perbill to percent (e.g., 50_000_000 is 5%)
+            commission: (() => {
+              const value = typeof prefs.commission?.toNumber === 'function'
+                ? prefs.commission.toNumber()
+                : Number.parseInt(prefs.commission?.toString() || '0', 10);
+              return (value / 10_000_000).toFixed(2);
+            })(), // Perbill to percent (e.g., 50_000_000 is 5%)
             blocksProduced: blocksProduced
           });
         } catch (singleValidatorError) {
