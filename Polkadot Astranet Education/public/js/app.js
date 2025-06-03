@@ -179,6 +179,9 @@ function setupEventListeners() {
     const runContractBtn = document.getElementById('runContract');
     if (runContractBtn) runContractBtn.addEventListener('click', runContractInSandbox);
 
+    const deployModalBtn = document.getElementById('deployModalBtn');
+    if (deployModalBtn) deployModalBtn.addEventListener('click', handlePopupDeploy);
+
     const networkSelectElement = document.getElementById('networkSelect');
     if (networkSelectElement) {
         networkSelectElement.addEventListener('change', handleNetworkChange);
@@ -780,24 +783,8 @@ function loadContractTemplate(templateName) {
 }
 
 function runContractInSandbox() {
-    // This remains a simulation as client-side compilation is out of scope
-    console.log('Running contract in sandbox (simulation)...');
-    const contractLanguage = document.getElementById('contractLanguage')?.value;
-    const contractCodeEditor = document.getElementById('contractEditor');
-    const contractOutput = document.getElementById('contractOutput');
-    
-    if (!contractCodeEditor || !contractOutput) return;
-    const code = contractCodeEditor.value || contractCodeEditor.textContent; // For textarea or div
-
-    if (!code) {
-        contractOutput.innerHTML = '<p class="error">No code to run in sandbox.</p>';
-        return;
-    }
-    contractOutput.innerHTML = '<p>Simulating contract execution...</p>';
-    setTimeout(() => {
-        contractOutput.innerHTML = `<p class="success">Sandbox execution simulated for ${contractLanguage || 'selected'} contract.</p>
-                                    <pre>Output: OK\nGas used: 10000</pre>`;
-    }, 1500);
+    const modal = document.getElementById('deployModal');
+    if (modal) modal.style.display = 'flex';
 }
 
 function startBasicsQuizHandler() {
@@ -912,6 +899,46 @@ function clearBlockchainDataDisplay() {
     });
      const searchResultsEl = document.getElementById('explorerSearchResults');
     if(searchResultsEl) searchResultsEl.innerHTML = "";
+}
+
+async function handlePopupDeploy() {
+    const deployBtn = document.getElementById('deployModalBtn');
+    if (deployBtn) deployBtn.disabled = true;
+    try {
+        const abi = document.getElementById('deployAbi').value.trim();
+        const wasm = document.getElementById('deployWasm').value.trim();
+        const address = document.getElementById('deployAddress').value.trim();
+        const mnemonic = document.getElementById('deployMnemonic').value.trim();
+        const constructorArgsStr = document.getElementById('deployConstructor').value.trim();
+
+        if (!abi || !wasm || !address || !mnemonic) {
+            showErrorNotification('All fields are required.');
+            return;
+        }
+
+        let constructorArgs = [];
+        if (constructorArgsStr) {
+            try { constructorArgs = JSON.parse(constructorArgsStr); } catch (e) {
+                showErrorNotification('Constructor args must be valid JSON.');
+                return;
+            }
+        }
+
+        const networkId = document.getElementById('networkSelect')?.value;
+        if (networkId && blockchainSelector.getCurrentNetwork()?.id !== networkId) {
+            await handleNetworkChange({ target: { value: networkId } });
+        }
+
+        const contractData = { abi: JSON.parse(abi), wasm };
+        const deployOptions = { deployerAddress: address, deployerMnemonic: mnemonic, constructorArgs };
+        const result = await contractDeployer.deployContract(contractData, deployOptions);
+        showSuccessNotification(`Contract deployed at ${result.address}`);
+        document.getElementById('deployModal').style.display = 'none';
+    } catch (error) {
+        showErrorNotification(`Deployment failed: ${error.message}`);
+    } finally {
+        if (deployBtn) deployBtn.disabled = false;
+    }
 }
 
 

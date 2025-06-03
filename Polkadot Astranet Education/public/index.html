@@ -812,6 +812,25 @@ contract Flipper {
         </div>
     </footer>
 
+    <!-- Deploy Contract Modal -->
+    <div id="deployModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close btn btn-secondary">&times;</button>
+            <h3 class="mb-3">Deploy Contract</h3>
+            <label for="deployAddress" class="form-label">Deployer Address</label>
+            <input type="text" id="deployAddress" class="form-control mb-3">
+            <label for="deployMnemonic" class="form-label">Deployer Mnemonic</label>
+            <input type="text" id="deployMnemonic" class="form-control mb-3">
+            <label for="deployAbi" class="form-label">ABI JSON</label>
+            <textarea id="deployAbi" class="form-control mb-3" rows="4"></textarea>
+            <label for="deployWasm" class="form-label">WASM Hex</label>
+            <textarea id="deployWasm" class="form-control mb-3" rows="4"></textarea>
+            <label for="deployConstructor" class="form-label">Constructor Args (JSON)</label>
+            <input type="text" id="deployConstructor" class="form-control mb-3" placeholder="[]">
+            <button id="deployModalBtn" class="btn btn-primary">Deploy</button>
+        </div>
+    </div>
+
     <!-- Authentication modals removed -->
 
 
