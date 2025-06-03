@@ -187,41 +187,29 @@ function setupEventListeners() {
 }
 
 function initializeTabs() {
-    document.querySelectorAll('.content-tabs .tab-button, .explorer-tabs .tab-button, .dashboard-tabs .tab-button').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const tabGroup = e.currentTarget.closest('.tabs-container'); // Find parent tabs container
-            if (!tabGroup) return;
-
-            const tabTargetType = e.currentTarget.dataset.tabType || 'content'; // e.g., 'content', 'explorer', 'dashboard'
-            const tabName = e.currentTarget.dataset.tab;
+    // Learning section tabs
+    document.querySelectorAll('.content-tabs .tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const tabName = button.dataset.tab;
             if (!tabName) return;
 
-            // Hide all tab contents within this group
-            tabGroup.querySelectorAll(`.tab-pane[data-tab-type="${tabTargetType}"]`).forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Show selected tab content
-            const selectedContent = tabGroup.querySelector(`.tab-pane[data-tab-type="${tabTargetType}"][id="${tabName}-pane"], .tab-pane[data-tab-type="${tabTargetType}"][id="${tabName}-content"]`);
-            if (selectedContent) {
-                selectedContent.classList.add('active');
-            }
-            
-            // Update active tab button within this group
-            tabGroup.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            e.currentTarget.classList.add('active');
+            // Toggle visible content
+            document.querySelectorAll('#learn .tab-content').forEach(c => c.classList.remove('active'));
+            const content = document.getElementById(`${tabName}-content`);
+            if (content) content.classList.add('active');
+
+            // Update button state
+            document.querySelectorAll('.content-tabs .tab-button').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
         });
     });
 
-    // Activate the first tab in each group by default
-    document.querySelectorAll('.tabs-container').forEach(tabGroup => {
-        const firstButton = tabGroup.querySelector('.tab-button');
-        if (firstButton) {
-            firstButton.click();
-        }
-    });
+    // Ensure default tabs are active on load
+    const firstLearningTab = document.querySelector('.content-tabs .tab-button');
+    if (firstLearningTab) firstLearningTab.click();
+
+    switchExplorerTab('blocks');
+    switchDashboardTab('overview');
 }
 
 function initializeDarkMode() {
@@ -808,9 +796,9 @@ function runContractInSandbox() {
 }
 
 function startBasicsQuizHandler() {
-    // This can remain a static client-side quiz
+    // Simple client-side quiz rendering
     console.log('Starting basics quiz...');
-    const basicsQuizContainer = document.getElementById('basicsQuizContainer'); // Assuming a container for quiz
+    const basicsQuizContainer = document.getElementById('basicsQuiz');
     if (!basicsQuizContainer) return;
     // Simplified quiz UI generation
     basicsQuizContainer.innerHTML = `
@@ -830,7 +818,7 @@ function startBasicsQuizHandler() {
 
 function loadArchitectureDiagramHandler() {
     console.log('Loading architecture diagram...');
-    const diagramContainer = document.getElementById('architectureDiagramContainer'); // Assuming container
+    const diagramContainer = document.getElementById('architectureDiagram');
     if (!diagramContainer) return;
     diagramContainer.innerHTML = `<img src="assets/polkadot-architecture.png" alt="Polkadot Architecture" style="max-width:100%;">
                                  <p>Interactive elements for Relay Chain, Parachains, Bridges would go here.</p>`;
@@ -838,9 +826,9 @@ function loadArchitectureDiagramHandler() {
 }
 
 function startCrossChainDemoHandler() {
-    // This remains a simulation
+    // Simple simulated cross-chain transfer
     console.log('Starting cross-chain demo (simulation)...');
-    const demoContainer = document.getElementById('crossChainDemoContainer'); // Assuming container
+    const demoContainer = document.getElementById('crossChainDemo');
     if (!demoContainer) return;
     demoContainer.innerHTML = `<p>Simulating cross-chain transfer from Parachain A to Parachain B...</p>
                                <p>Status: Transfer initiated...</p>
