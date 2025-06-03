@@ -28,7 +28,8 @@ class PolkadotConnector {
   async connect() {
     try {
       // Dynamic import using stable versions for Polkadot libraries
-      const { ApiPromise, WsProvider } = await import('https://cdn.jsdelivr.net/npm/@polkadot/api@13/+esm');
+      // Use a recent version of the Polkadot API to support modern runtime features
+      const { ApiPromise, WsProvider } = await import('https://cdn.jsdelivr.net/npm/@polkadot/api@16/+esm');
       
       console.log(`Connecting to Polkadot network at ${this.networkEndpoint}...`);
       
@@ -187,7 +188,8 @@ class PolkadotConnector {
     }
 
     // Using stable version for extension-dapp
-    const { web3Enable, web3Accounts } = await import('https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.47/+esm');
+    // Keep extension-dapp in sync with the API for compatibility
+    const { web3Enable, web3Accounts } = await import('https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.59/+esm');
     
     const extensions = await web3Enable('Astranet Education Demo');
     if (extensions.length === 0) {
@@ -265,8 +267,9 @@ class PolkadotConnector {
   async createAccount(mnemonic = null) {
     try {
       // Dynamic import using stable versions
-      const { Keyring } = await import('https://cdn.jsdelivr.net/npm/@polkadot/keyring@13/+esm');
-      const { mnemonicGenerate, mnemonicValidate } = await import('https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@13/+esm');
+      // Matching keyring and util-crypto versions to the API keeps account operations reliable
+      const { Keyring } = await import('https://cdn.jsdelivr.net/npm/@polkadot/keyring@13.5.1/+esm');
+      const { mnemonicGenerate, mnemonicValidate } = await import('https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@13.5.1/+esm');
       
       const seedPhrase = mnemonic || mnemonicGenerate();
       if (!mnemonicValidate(seedPhrase)) {
@@ -376,7 +379,7 @@ class PolkadotConnector {
     }
 
     try {
-      const { Keyring } = await import('https://cdn.jsdelivr.net/npm/@polkadot/keyring@13/+esm');
+      const { Keyring } = await import('https://cdn.jsdelivr.net/npm/@polkadot/keyring@13.5.1/+esm');
       
       const keyring = new Keyring({ type: 'sr25519', ss58Format: this.api.registry.chainSS58 });
       const account = keyring.addFromMnemonic(senderMnemonic);
