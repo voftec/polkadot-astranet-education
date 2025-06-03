@@ -507,6 +507,36 @@ img {
   font-size: 1.25rem;
 }
 
+.nav-login-btn {
+  margin-left: var(--spacing-lg);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--primary);
+  border-radius: var(--border-radius-sm);
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.nav-login-btn:hover,
+.nav-login-btn:focus-visible {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.progress-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--background-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.progress-circle .progress-text {
+  font-size: 1rem;
+}
+
 /* ===== Responsive Design ===== */
 @media (max-width: 992px) {
   h1 {
