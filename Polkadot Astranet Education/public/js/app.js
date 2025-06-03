@@ -4,7 +4,6 @@
  * Main application logic for the Polkadot Educational Web Platform.
  * This file handles UI interactions, initializes components, and
  * integrates the Polkadot framework.
- * Firebase integration is NOT included in this version.
  */
 
 import PolkadotConnector from './framework/polkadot-connector.js';
@@ -317,7 +316,6 @@ function updateConnectionStatusDisplay(connected, error = null) {
 }
 
 function updateDashboardWithStaticData() {
-    // Since Firebase is disabled, we'll use static data or clear fields.
     const learningProgressCircleSvg = document.querySelector('#learningProgressCircle .progress-circle-bar'); // Assuming SVG structure
     if(learningProgressCircleSvg) updateProgressCircle(learningProgressCircleSvg, 0);
 
@@ -849,7 +847,6 @@ function startCrossChainDemoHandler() {
 function startLearningModule(moduleId) {
     console.log(`Starting learning module: ${moduleId}`);
     // Navigate to the learning content for moduleId, e.g., by showing a specific div or loading content.
-    // Since Firebase is disabled, progress tracking isn't implemented.
     showSuccessNotification(`Navigating to ${moduleId} module.`);
     // Example: show specific content section
     document.querySelectorAll('.learning-module-content').forEach(el => el.style.display = 'none');
