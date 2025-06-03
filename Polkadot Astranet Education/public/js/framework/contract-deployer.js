@@ -101,15 +101,12 @@ class ContractDeployer {
         deployOptions.deployerMnemonic
       );
       
-      // Find the contract address from events
+      // Extract the contract address from the Instantiated event
       let contractAddress = null;
       for (const event of result.events) {
         if (event.section === 'contracts' && event.method === 'Instantiated') {
-          // The second item in the data array is the contract address
-          const dataArray = event.data.split(',');
-          if (dataArray.length >= 2) {
-            contractAddress = dataArray[1].trim();
-          }
+          // event.data[1] holds the contract address
+          contractAddress = event.data[1].toString();
           break;
         }
       }
