@@ -6,12 +6,15 @@
  * integrates the Polkadot framework with Firebase functionality.
  */
 
+import PolkadotConnector from './framework/polkadot-connector.js';
+import BlockchainSelector from './framework/blockchain-selector.js';
+import ContractDeployer from './framework/contract-deployer.js';
+
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize components
     initializeUI();
     initializePolkadot();
-    initializeFirebase();
     setupEventListeners();
 });
 
@@ -92,55 +95,6 @@ function initializePolkadot() {
     console.log('Polkadot framework initialized');
 }
 
-/**
- * Initialize Firebase components
- */
-function initializeFirebase() {
-    console.log('Initializing Firebase components...');
-    
-    try {
-        // Check if Firebase is already initialized
-        if (!window.firebaseApp) {
-            // Initialize Firebase with configuration
-            const firebaseConfig = FirebaseConfig.getConfig();
-            window.firebaseApp = firebase.initializeApp(firebaseConfig);
-        }
-        
-        // Initialize authentication
-        const auth = new FirebaseAuth(window.firebaseApp);
-        
-        // Initialize database
-        const database = new FirebaseDatabase(window.firebaseApp);
-        
-        // Initialize blockchain integration
-        const blockchainIntegration = new BlockchainIntegration({
-            database: database,
-            connector: window.polkadotConnector
-        });
-        
-        // Store instances in window for global access
-        window.firebaseAuth = auth;
-        window.firebaseDatabase = database;
-        window.blockchainIntegration = blockchainIntegration;
-        
-        // Check authentication state
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                console.log('User is signed in:', user.email);
-                updateUIForAuthenticatedUser(user);
-                loadUserData(user.uid);
-            } else {
-                console.log('User is signed out');
-                updateUIForUnauthenticatedUser();
-            }
-        });
-    } catch (error) {
-        console.error('Error initializing Firebase:', error);
-        showErrorNotification('Failed to initialize Firebase. Please check your connection and try again.');
-    }
-    
-    console.log('Firebase components initialized');
-}
 
 /**
  * Set up event listeners for UI interactions
