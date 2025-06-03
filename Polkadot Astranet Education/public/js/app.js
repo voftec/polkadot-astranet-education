@@ -488,13 +488,13 @@ function updateAccountsTable(accounts) {
 async function loadValidators() {
     const validatorsTableBody = document.querySelector('#validatorsTable tbody');
     if (!validatorsTableBody) return;
-    validatorsTableBody.innerHTML = `<tr><td colspan="4" class="text-center">Loading validators...</td></tr>`;
+    validatorsTableBody.innerHTML = `<tr><td colspan="5" class="text-center">Loading validators...</td></tr>`;
     try {
         const validators = await polkadotConnector.getActiveValidators(5);
         updateValidatorsTable(validators);
     } catch (error) {
         console.error('Error loading validators:', error);
-        validatorsTableBody.innerHTML = `<tr><td colspan="4" class="text-center">Error loading validators.</td></tr>`;
+        validatorsTableBody.innerHTML = `<tr><td colspan="5" class="text-center">Error loading validators.</td></tr>`;
     }
 }
 
@@ -502,7 +502,7 @@ function updateValidatorsTable(validators) {
     const validatorsTableBody = document.querySelector('#validatorsTable tbody');
     if (!validatorsTableBody) return;
     if (!validators || validators.length === 0) {
-        validatorsTableBody.innerHTML = `<tr><td colspan="4" class="text-center">No validators to display.</td></tr>`;
+        validatorsTableBody.innerHTML = `<tr><td colspan="5" class="text-center">No validators to display.</td></tr>`;
         return;
     }
     validatorsTableBody.innerHTML = validators.map((val, index) => `
@@ -511,6 +511,7 @@ function updateValidatorsTable(validators) {
             <td>${val.address.substring(0,15)}...</td>
             <td>${(parseFloat(val.stakedAmount) / Math.pow(10, polkadotConnector?.api?.registry.chainDecimals[0] || 12)).toFixed(2)} ${polkadotConnector?.api?.registry.chainTokens[0] || 'UNIT'}</td>
             <td>${val.commission}%</td>
+            <td>${val.blocksProduced ?? 0}</td>
         </tr>
     `).join('');
 }
