@@ -165,7 +165,8 @@ class PolkadotConnector {
       throw new Error('Polkadot.js extension not found');
     }
 
-    const { web3Enable, web3Accounts } = await import('https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@16/+esm');
+    // Use versionless import for extension-dapp to avoid missing version errors
+    const { web3Enable, web3Accounts } = await import('https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp/+esm');
     await web3Enable('Astranet Education Demo');
     const accounts = await web3Accounts();
 
