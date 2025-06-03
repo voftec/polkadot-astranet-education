@@ -17,6 +17,8 @@ class PolkadotConnector {
     this.api = null;
     this.connected = false;
     this.networkEndpoint = config.networkEndpoint || 'wss://rpc.polkadot.io';
+    this.networkId = config.networkId || null;
+    this.explorerUrl = config.explorerUrl || null;
     this.connectionListeners = [];
     this.accounts = []; // Stores accounts from createAccount, importAccount, and connectWallet
   }
@@ -677,8 +679,7 @@ class PolkadotConnector {
 
   /**
    * Get accounts with the highest balances (top accounts by free balance).
-   * Note: Querying all account entries can be very resource-intensive on large chains.
-   * This might only be feasible on development/test networks or if the node supports it efficiently.
+   * Tries Subscan API first for efficiency, falling back to on-chain iteration if needed.
    * @param {number} limit - Number of accounts to return
    * @returns {Promise<Array<Object>>} - Sorted account data { address, balance, nonce }
    */
@@ -687,29 +688,57 @@ class PolkadotConnector {
       throw new Error('Not connected to Polkadot network');
     }
 
-    console.warn("Fetching top accounts by iterating all account entries. This can be slow and memory-intensive on large networks.");
-
-    try {
-      // api.query.system.account.entries() can be very large.
-      // Use with caution on mainnets. Some nodes might restrict this query.
-      const entries = await this.api.query.system.account.entries();
-
-      const accounts = entries
-        .map(([key, { data, nonce }]) => ({ // AccountInfo structure has data and nonce
-          address: key.args[0].toString(), // The address part of the storage key
-          balance: data.free.toString(),   // Free balance
-          nonce: nonce.toNumber()          // Nonce (number of transactions)
-        }))
-        .sort((a, b) => BigInt(b.balance) - BigInt(a.balance)) // Sort by balance descending
-        .slice(0, limit); // Take the top 'limit'
-
-      return accounts;
-    } catch (error)
-    {
-      console.error('Error getting top accounts:', error);
-      if (error.message && error.message.includes("entry limit")) {
-        console.warn("Node might have restricted query size for system.account.entries. Try reducing limit or use an indexer for this data.");
+    // Attempt to fetch via Subscan when network information is available
+    if (this.networkId && this.networkId !== 'local') {
+      const apiUrl = `https://${this.networkId}.api.subscan.io/api/scan/accounts`;
+      try {
+        const resp = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ row: limit, page: 0, order: 'desc', order_field: 'balance' })
+        });
+        const json = await resp.json();
+        if (json.code === 0 && json.data && Array.isArray(json.data.list)) {
+          const decimals = this.api?.registry?.chainDecimals[0] || 12;
+          return json.data.list.map(item => ({
+            address: item.address,
+            balance: this._decimalToPlanck(item.balance, decimals),
+            nonce: item.count_extrinsic || 0
+          }));
+        } else {
+          console.warn('Subscan did not return expected data:', json.message);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch top accounts from Subscan:', err.message);
       }
+    }
+
+    // Fallback to slow on-chain method
+    return this._getTopAccountsFromChain(limit);
+  }
+
+  _decimalToPlanck(balanceStr, decimals) {
+    const [intPart, fracPart = ''] = balanceStr.split('.');
+    const frac = (fracPart + '0'.repeat(decimals)).slice(0, decimals);
+    const digits = (intPart + frac).replace(/^0+/, '') || '0';
+    return digits;
+  }
+
+  async _getTopAccountsFromChain(limit = 10) {
+    console.warn('Fetching top accounts by iterating all account entries. This can be slow.');
+    try {
+      const entries = await this.api.query.system.account.entries();
+      const accounts = entries
+        .map(([key, { data, nonce }]) => ({
+          address: key.args[0].toString(),
+          balance: data.free.toString(),
+          nonce: nonce.toNumber()
+        }))
+        .sort((a, b) => BigInt(b.balance) - BigInt(a.balance))
+        .slice(0, limit);
+      return accounts;
+    } catch (error) {
+      console.error('Error getting top accounts from chain:', error);
       throw error;
     }
   }

@@ -45,7 +45,9 @@ async function initializePolkadotFramework() {
     console.log('Initializing Polkadot framework...');
     try {
         polkadotConnector = new PolkadotConnector({
-            networkEndpoint: 'wss://rpc.polkadot.io' // Default network
+            networkEndpoint: 'wss://rpc.polkadot.io', // Default network
+            networkId: 'polkadot',
+            explorerUrl: 'https://polkadot.subscan.io'
         });
 
         polkadotConnector.addConnectionListener(handleConnectionStatusChange);
@@ -458,7 +460,7 @@ async function loadAccounts() {
         return;
     }
     try {
-        const accounts = await polkadotConnector.getTopAccounts(5);
+        const accounts = await polkadotConnector.getTopAccounts(10);
         updateAccountsTable(accounts);
     } catch (error) {
         console.error('Error loading accounts:', error);
@@ -858,7 +860,11 @@ async function handleNetworkChange(event) {
         }
         
         // Create and connect new connector
-        polkadotConnector = new PolkadotConnector({ networkEndpoint: selectedNetwork.endpoint });
+        polkadotConnector = new PolkadotConnector({
+            networkEndpoint: selectedNetwork.endpoint,
+            networkId: selectedNetwork.id,
+            explorerUrl: selectedNetwork.explorerUrl
+        });
         polkadotConnector.addConnectionListener(handleConnectionStatusChange); // Re-add listener
         
         await polkadotConnector.connect();
