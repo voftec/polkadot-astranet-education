@@ -332,7 +332,7 @@ document.addEventListener('app:userLoggedIn', (event) => {
     } else if (user && user.emailVerified && window.location.pathname.includes('/auth/login') && !loginRedirectTriggered) {
         popupNotifier.success('¡Inicio de sesión exitoso! Redirigiendo...', 'Inicio exitoso');
         loginRedirectTriggered = true;
-        window.location.href = '/public/index.html';
+        window.location.href = 'index.html';
     }
 });
 
@@ -341,7 +341,7 @@ document.addEventListener('app:userLoggedOut', () => {
     if (window.location.pathname.includes('/auth/login')) {
         return;
     }
-    window.location.href = '/public/auth/login.html';
+    window.location.href = 'auth/login.html';
 });
 
 if (document.readyState === 'loading') {
