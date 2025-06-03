@@ -20,6 +20,7 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="assets/css/auth/login.css">
 </head>
 <body>
     <!-- Header -->
@@ -43,7 +44,7 @@
                     <i class="fas fa-moon"></i>
                 </button>
 
-                <a href="auth/login.html" class="nav-login-btn" id="loginNavBtn">Login</a>
+                <a href="#" class="nav-login-btn" id="loginNavBtn">Login</a>
 
                 <button class="mobile-menu-toggle" id="mobileMenuToggle">
                     <i class="fas fa-bars"></i>
@@ -863,7 +864,46 @@ contract Flipper {
         </div>
     </div>
 
-    <!-- Authentication modals removed -->
+    <!-- Login / Sign Up Modal -->
+    <div id="loginModal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <div class="auth-widget" id="loginWidget">
+                <h2 id="loginModalTitle">Login</h2>
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" placeholder="Email">
+
+                <label for="loginPassword">Password</label>
+                <div class="password-container">
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                    <button class="toggle-password"><img id="loginEyeImg" src="assets/png/eye.png" alt="Mostrar contraseña" /></button>
+                </div>
+
+                <button id="signInButton" class="auth-button primary">Login</button>
+                <p class="switch-auth">Don't have an account? <a href="#" id="showSignUp">Sign Up</a></p>
+            </div>
+
+            <div class="auth-widget hidden" id="signUpWidget">
+                <h2>Sign Up</h2>
+                <label for="signUpEmail">Email</label>
+                <input type="email" id="signUpEmail" placeholder="Enter your email">
+
+                <label for="signUpPassword">Password</label>
+                <div class="password-container">
+                    <input type="password" id="signUpPassword" placeholder="Choose a password (min. 6 characters)">
+                    <button class="toggle-password"><img id="signUpEyeImg" src="assets/png/eye.png" alt="Mostrar contraseña" /></button>
+                </div>
+
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="password-container">
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                </div>
+
+                <button id="signUpButton" class="auth-button primary">Sign Up</button>
+                <p class="switch-auth">Already have an account? <a href="#" id="showLogin">Login</a></p>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Code Editor (Monaco) -->

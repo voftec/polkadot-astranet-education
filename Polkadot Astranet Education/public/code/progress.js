@@ -14,6 +14,12 @@ const auth = getAuth(app);
 const rtdb = getDatabase(app);
 
 const loginBtn = document.getElementById('loginNavBtn');
+const loginModal = document.getElementById('loginModal');
+
+function openLoginModal(e) {
+  if (e) e.preventDefault();
+  if (loginModal) loginModal.style.display = 'flex';
+}
 
 function progressRef(uid) {
   return rtdbRef(rtdb, `users/${uid}/polkadot-astranet-education/progress`);
@@ -50,6 +56,7 @@ document.addEventListener('app:userLoggedIn', async (e) => {
   document.dispatchEvent(new CustomEvent('progress:loaded', { detail: progress }));
   if (loginBtn) {
     loginBtn.textContent = 'Logout';
+    loginBtn.removeEventListener('click', openLoginModal);
     loginBtn.removeAttribute('href');
     loginBtn.addEventListener('click', handleLogoutClick);
   }
@@ -59,8 +66,9 @@ document.addEventListener('app:userLoggedOut', () => {
   updateProgressUI(0);
   if (loginBtn) {
     loginBtn.textContent = 'Login';
-    loginBtn.setAttribute('href', 'auth/login.html');
     loginBtn.removeEventListener('click', handleLogoutClick);
+    loginBtn.removeAttribute('href');
+    loginBtn.addEventListener('click', openLoginModal);
   }
 });
 
@@ -75,4 +83,8 @@ document.addEventListener('progress:save', async (e) => {
 function handleLogoutClick(e) {
   e.preventDefault();
   document.dispatchEvent(new CustomEvent('app:requestLogout'));
+}
+
+if (loginBtn) {
+  loginBtn.addEventListener('click', openLoginModal);
 }
