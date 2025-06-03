@@ -80,7 +80,9 @@ class BlockchainSelector {
 
       // Create a new connector with the selected network
       this.connector = new PolkadotConnector({
-        networkEndpoint: network.endpoint
+        networkEndpoint: network.endpoint,
+        networkId: network.id,
+        explorerUrl: network.explorerUrl
       });
 
       // Connect to the network
@@ -172,7 +174,9 @@ class BlockchainSelector {
       testEndpoints.map(async (network) => {
         try {
           const tempConnector = new PolkadotConnector({
-            networkEndpoint: network.endpoint
+            networkEndpoint: network.endpoint,
+            networkId: network.id,
+            explorerUrl: network.explorerUrl
           });
           
           // Try to connect with a timeout
@@ -226,7 +230,9 @@ class BlockchainSelector {
         tempConnector = this.connector;
       } else {
         tempConnector = new PolkadotConnector({
-          networkEndpoint: network.endpoint
+          networkEndpoint: network.endpoint,
+          networkId: network.id,
+          explorerUrl: network.explorerUrl
         });
         await tempConnector.connect();
         shouldDisconnect = true;
