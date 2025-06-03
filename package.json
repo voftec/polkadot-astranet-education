@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "http-server public -p 3000 -c-1",
-    "test": "cd examples/demo-contracts && cargo +nightly test"
+    "start": "http-server 'Polkadot Astranet Education/public' -p 3000 -c-1",
+    "test": "cd 'Polkadot Astranet Education/examples/demo-contracts' && cargo +nightly test"
   },
   "keywords": [],
   "author": "",
