@@ -332,7 +332,7 @@ document.addEventListener('app:userLoggedIn', (event) => {
     } else if (user && user.emailVerified && window.location.pathname.startsWith('/auth/login') && !loginRedirectTriggered) {
           popupNotifier.success('¡Inicio de sesión exitoso! Redirigiendo...', 'Inicio exitoso');
         loginRedirectTriggered = true;
-        window.location.href = '/inicio/landing.html';
+        window.location.href = '/index.html';
     }
 });
 
