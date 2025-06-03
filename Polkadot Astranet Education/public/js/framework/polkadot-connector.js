@@ -28,7 +28,7 @@ class PolkadotConnector {
   async connect() {
     try {
       // Dynamic import to ensure compatibility with browser environments
-      const { ApiPromise, WsProvider } = await import('@polkadot/api');
+      const { ApiPromise, WsProvider } = await import('https://cdn.jsdelivr.net/npm/@polkadot/api@16/+esm');
       
       console.log(`Connecting to Polkadot network at ${this.networkEndpoint}...`);
       
@@ -165,7 +165,7 @@ class PolkadotConnector {
       throw new Error('Polkadot.js extension not found');
     }
 
-    const { web3Enable, web3Accounts } = await import('@polkadot/extension-dapp');
+    const { web3Enable, web3Accounts } = await import('https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@16/+esm');
     await web3Enable('Astranet Education Demo');
     const accounts = await web3Accounts();
 
@@ -217,8 +217,8 @@ class PolkadotConnector {
   async createAccount(mnemonic = null) {
     try {
       // Dynamic import to ensure compatibility with browser environments
-      const { Keyring } = await import('@polkadot/keyring');
-      const { mnemonicGenerate } = await import('@polkadot/util-crypto');
+      const { Keyring } = await import('https://cdn.jsdelivr.net/npm/@polkadot/keyring@16/+esm');
+      const { mnemonicGenerate } = await import('https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@16/+esm');
       
       // Generate a mnemonic if not provided
       const seedPhrase = mnemonic || mnemonicGenerate();
@@ -317,7 +317,7 @@ class PolkadotConnector {
 
     try {
       // Dynamic import to ensure compatibility with browser environments
-      const { Keyring } = await import('@polkadot/keyring');
+      const { Keyring } = await import('https://cdn.jsdelivr.net/npm/@polkadot/keyring@16/+esm');
       
       // Create a keyring instance
       const keyring = new Keyring({ type: 'sr25519' });
