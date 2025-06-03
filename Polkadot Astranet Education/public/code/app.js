@@ -8,8 +8,9 @@ if (isLoggedIn()) {
   // Redirect to login or show guest UI
 }
 
-if (!isLoggedIn() && window.location.pathname !== '/auth/login.html') {
-  window.location.href = '/auth/login.html';
+if (!isLoggedIn() && !window.location.pathname.includes('/auth/login')) {
+  // use relative path so it works when served from /public/
+  window.location.href = 'auth/login.html';
 }
 
 // Blog logic removed

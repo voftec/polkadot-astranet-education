@@ -337,11 +337,11 @@ document.addEventListener('app:userLoggedIn', (event) => {
 });
 
 document.addEventListener('app:userLoggedOut', () => {
-    const referrer = document.referrer;
-    const refUrl = referrer ? new URL(referrer) : null;
-    const sameOrigin = refUrl && refUrl.origin === window.location.origin;
-    const target = sameOrigin ? refUrl.pathname + refUrl.search + refUrl.hash : '/public/index.html';
-    window.location.href = target;
+    // Avoid redirect loop: stay on login page when already there
+    if (window.location.pathname.includes('/auth/login')) {
+        return;
+    }
+    window.location.href = '/public/auth/login.html';
 });
 
 if (document.readyState === 'loading') {
