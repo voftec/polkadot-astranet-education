@@ -439,8 +439,15 @@ class PolkadotConnector {
 
     try {
       const blockHash = await this.api.rpc.chain.getBlockHash(blockNumber);
-      const signedBlock = await this.api.rpc.chain.getBlock(blockHash);
+
+      const [signedBlock, extendedHeader, moment] = await Promise.all([
+        this.api.rpc.chain.getBlock(blockHash),
+        this.api.derive.chain.getHeader(blockHash),
+        this.api.query.timestamp.now.at(blockHash)
+      ]);
+
       const header = signedBlock.block.header;
+      const validator = extendedHeader.author ? extendedHeader.author.toString() : '';
 
       return {
         number: header.number.toNumber(),
@@ -448,6 +455,9 @@ class PolkadotConnector {
         parentHash: header.parentHash.toHex(),
         stateRoot: header.stateRoot.toHex(),
         extrinsicsRoot: header.extrinsicsRoot.toHex(),
+        timestamp: moment.toNumber(),
+        transactions: signedBlock.block.extrinsics.length,
+        validator,
         extrinsics: signedBlock.block.extrinsics.map((ex) => ex.toHuman())
       };
     } catch (error) {

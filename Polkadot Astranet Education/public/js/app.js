@@ -741,22 +741,27 @@ function loadBlocks() {
 function updateBlocksTable(blocks) {
     const blocksTable = document.getElementById('blocksTable');
     if (!blocksTable) return;
-    
+
     const tbody = blocksTable.querySelector('tbody');
-    
+
     // Generate HTML for blocks
     const blocksHTML = blocks.map(block => {
+        const hashDisplay = block.hash ? `${block.hash.substring(0, 10)}...${block.hash.substring(block.hash.length - 8)}` : '';
+        const validatorDisplay = block.validator ? `${block.validator.substring(0, 10)}...${block.validator.substring(block.validator.length - 8)}` : 'N/A';
+        const timestampDisplay = block.timestamp ? new Date(block.timestamp).toLocaleString() : 'N/A';
+        const txCount = block.transactions !== undefined ? block.transactions : (block.extrinsics ? block.extrinsics.length : 'N/A');
+
         return `
             <tr>
                 <td>${block.number}</td>
-                <td>${block.hash.substring(0, 10)}...${block.hash.substring(block.hash.length - 8)}</td>
-                <td>${new Date(block.timestamp).toLocaleString()}</td>
-                <td>${block.transactions}</td>
-                <td>${block.validator.substring(0, 10)}...${block.validator.substring(block.validator.length - 8)}</td>
+                <td>${hashDisplay}</td>
+                <td>${timestampDisplay}</td>
+                <td>${txCount}</td>
+                <td>${validatorDisplay}</td>
             </tr>
         `;
     }).join('');
-    
+
     tbody.innerHTML = blocksHTML;
 }
 
