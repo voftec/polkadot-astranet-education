@@ -508,6 +508,52 @@ class PolkadotConnector {
   }
 
   /**
+   * Fetch recent transfer transactions by scanning latest blocks.
+   * This focuses on balance transfers for demo purposes.
+   * @param {number} limit - Number of transactions to return
+   * @returns {Promise<Array>} Parsed transaction data
+   */
+  async getRecentTransactions(limit) {
+    if (!this.isConnected()) {
+      throw new Error('Not connected to Polkadot network');
+    }
+
+    try {
+      const latestHeader = await this.api.rpc.chain.getHeader();
+      const latestNumber = latestHeader.number.toNumber();
+      const transactions = [];
+
+      for (let i = 0; i < 100 && transactions.length < limit && latestNumber - i >= 0; i++) {
+        const blockNumber = latestNumber - i;
+        const blockHash = await this.api.rpc.chain.getBlockHash(blockNumber);
+        const signedBlock = await this.api.rpc.chain.getBlock(blockHash);
+
+        for (const extrinsic of signedBlock.block.extrinsics) {
+          const { method, signer } = extrinsic;
+          if (method.section === 'balances' && (method.method === 'transfer' || method.method === 'transferKeepAlive')) {
+            transactions.push({
+              hash: extrinsic.hash.toHex(),
+              blockNumber,
+              from: signer ? signer.toString() : '',
+              to: method.args[0].toString(),
+              value: method.args[1].toString()
+            });
+
+            if (transactions.length >= limit) {
+              break;
+            }
+          }
+        }
+      }
+
+      return transactions;
+    } catch (error) {
+      console.error('Error getting recent transactions:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Get accounts with the highest balances
    * @param {number} limit - Number of accounts to return
    * @returns {Promise<Array>} - Sorted account data
