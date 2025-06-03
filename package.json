@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "http-server 'Polkadot Astranet Education/public' -p 3000 -c-1",
-    "test": "cd 'Polkadot Astranet Education/examples/demo-contracts' && cargo +nightly test"
+    "test": "node scripts/runRustTests.js"
   },
   "keywords": [],
   "author": "",

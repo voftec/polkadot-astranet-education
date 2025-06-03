@@ -222,11 +222,11 @@ The platform includes unit tests for the smart contract examples. To run the tes
    cargo install cargo-contract --force
    ```
 
-2. Run the tests:
+2. Run the tests (offline):
    ```bash
-   cd examples/demo-contracts
-   cargo +nightly test
+   npm test
    ```
+   The script checks for a preinstalled nightly toolchain and cached dependencies.
 
 ## Contributing
 
