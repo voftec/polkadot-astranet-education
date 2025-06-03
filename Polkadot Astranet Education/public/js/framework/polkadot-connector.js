@@ -711,17 +711,16 @@ class PolkadotConnector {
     }
 
     try {
-      const [validatorIdsOpt, activeEraOpt] = await Promise.all([
+      const [validatorIds, activeEraOpt] = await Promise.all([
         this.api.query.session.validators(), // Returns Vec<ValidatorId>
         this.api.query.staking.activeEra()   // Returns Option<ActiveEraInfo>
       ]);
 
-      if (validatorIdsOpt.isEmpty || activeEraOpt.isNone) {
+      if (!validatorIds.length || activeEraOpt.isNone) {
         console.warn('Could not retrieve validators or active era.');
         return [];
       }
-      
-      const validatorIds = validatorIdsOpt.unwrap();
+
       const activeEra = activeEraOpt.unwrap().index.toNumber(); // Get era index
       const validatorData = [];
 
