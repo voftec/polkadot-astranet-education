@@ -4,7 +4,7 @@
  * Main application logic for the Polkadot Educational Web Platform.
  * This file handles UI interactions, initializes components, and
  * integrates the Polkadot framework.
- * Firebase integration is NOT included in this version.
+ * Firebase integration handled via separate modules for auth and progress.
  */
 
 import PolkadotConnector from './framework/polkadot-connector.js';
@@ -16,12 +16,19 @@ let polkadotConnector;
 let blockchainSelector;
 let contractDeployer;
 let connectedWallet = null; // Store connected wallet info { address, name, source }
+let userProgress = 0;
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     initializeUI();
     initializePolkadotFramework();
     setupEventListeners();
+});
+
+document.addEventListener('progress:loaded', (e) => {
+    userProgress = e.detail || 0;
+    const circle = document.getElementById('learningProgressCircle');
+    if(circle) updateProgressCircle(circle, userProgress);
 });
 
 /**
@@ -276,15 +283,9 @@ function initializeProgressCircles() {
 
 function updateProgressCircle(circleElement, progress) {
     if (!circleElement) return;
-    const radius = parseFloat(circleElement.getAttribute('r'));
-    const circumference = 2 * Math.PI * radius;
-    const offset = circumference - (progress / 100) * circumference;
-    circleElement.style.strokeDasharray = `${circumference} ${circumference}`;
-    circleElement.style.strokeDashoffset = offset;
-    
-    const textElement = circleElement.closest('.progress-container')?.querySelector('.progress-text');
+    circleElement.style.background = `conic-gradient(var(--primary) ${progress}%, var(--background-alt) ${progress}% 100%)`;
+    const textElement = circleElement.querySelector('.progress-text');
     if (textElement) textElement.textContent = `${progress}%`;
-    
     circleElement.setAttribute('data-progress', progress.toString());
 }
 
@@ -311,9 +312,8 @@ function updateConnectionStatusDisplay(connected, error = null) {
 }
 
 function updateDashboardWithStaticData() {
-    // Since Firebase is disabled, we'll use static data or clear fields.
-    const learningProgressCircleSvg = document.querySelector('#learningProgressCircle .progress-circle-bar'); // Assuming SVG structure
-    if(learningProgressCircleSvg) updateProgressCircle(learningProgressCircleSvg, 0);
+    const circle = document.getElementById('learningProgressCircle');
+    if(circle) updateProgressCircle(circle, userProgress);
 
     const contractsCountEl = document.getElementById('contractsCount');
     if (contractsCountEl) contractsCountEl.textContent = '0';
@@ -833,13 +833,20 @@ function startCrossChainDemoHandler() {
 function startLearningModule(moduleId) {
     console.log(`Starting learning module: ${moduleId}`);
     // Navigate to the learning content for moduleId, e.g., by showing a specific div or loading content.
-    // Since Firebase is disabled, progress tracking isn't implemented.
     showSuccessNotification(`Navigating to ${moduleId} module.`);
     // Example: show specific content section
     document.querySelectorAll('.learning-module-content').forEach(el => el.style.display = 'none');
     const moduleEl = document.getElementById(`module-${moduleId}-content`);
     if(moduleEl) moduleEl.style.display = 'block';
     else showErrorNotification(`Content for module ${moduleId} not found.`);
+    incrementUserProgress();
+}
+
+function incrementUserProgress() {
+    userProgress = Math.min(100, userProgress + 34);
+    const circle = document.getElementById('learningProgressCircle');
+    if(circle) updateProgressCircle(circle, userProgress);
+    document.dispatchEvent(new CustomEvent('progress:save', { detail: userProgress }));
 }
 
 async function handleNetworkChange(event) {
