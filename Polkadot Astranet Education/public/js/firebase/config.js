@@ -17,7 +17,7 @@ import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
  */
 const firebaseConfigs = {
   development: {
-    apiKey: process.env.FIREBASE_API_KEY || "YOUR_DEV_API_KEY", // Replace in production
+    apiKey: "YOUR_DEV_API_KEY",
     authDomain: "polkadot-edu-dev.firebaseapp.com",
     projectId: "polkadot-edu-dev",
     storageBucket: "polkadot-edu-dev.appspot.com",
@@ -27,15 +27,14 @@ const firebaseConfigs = {
     databaseURL: "https://polkadot-edu-dev.firebaseio.com"
   },
   production: {
-    // In production, all values should be loaded from environment variables
-    apiKey: process.env.FIREBASE_API_KEY,
-    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.FIREBASE_APP_ID,
-    measurementId: process.env.FIREBASE_MEASUREMENT_ID,
-    databaseURL: process.env.FIREBASE_DATABASE_URL
+    apiKey: "YOUR_PROD_API_KEY",
+    authDomain: "your-prod.firebaseapp.com",
+    projectId: "your-prod",
+    storageBucket: "your-prod.appspot.com",
+    messagingSenderId: "YOUR_PROD_MSG_ID",
+    appId: "YOUR_PROD_APP_ID",
+    measurementId: "YOUR_PROD_MEASUREMENT_ID",
+    databaseURL: "https://your-prod.firebaseio.com"
   }
 };
 
@@ -44,11 +43,8 @@ const firebaseConfigs = {
  * @returns {string} - 'development' or 'production'
  */
 function getEnvironment() {
-  // Check for environment variables, URL parameters, or other indicators
-  if (process.env.NODE_ENV === 'production' || window.location.hostname !== 'localhost') {
-    return 'production';
-  }
-  return 'development';
+  // Use hostname to determine environment when served statically
+  return window.location.hostname === 'localhost' ? 'development' : 'production';
 }
 
 /**
@@ -73,7 +69,7 @@ const database = getDatabase(app);
 // Initialize App Check for security (only in production)
 if (getEnvironment() === 'production') {
   const appCheck = initializeAppCheck(app, {
-    provider: new ReCaptchaV3Provider(process.env.RECAPTCHA_SITE_KEY),
+    provider: new ReCaptchaV3Provider('YOUR_RECAPTCHA_SITE_KEY'),
     isTokenAutoRefreshEnabled: true
   });
 }
