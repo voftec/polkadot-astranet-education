@@ -329,19 +329,20 @@ document.addEventListener('app:userLoggedIn', (event) => {
         console.error("Login/Profile fetch error reported to UI:", error);
     } else if (needsVerification) {
         popupNotifier.info('Revisa tu correo para verificar tu cuenta antes de iniciar sesión.', 'Verificar correo');
-    } else if (user && user.emailVerified && window.location.pathname.includes('/auth/login') && !loginRedirectTriggered) {
-        popupNotifier.success('¡Inicio de sesión exitoso! Redirigiendo...', 'Inicio exitoso');
-        loginRedirectTriggered = true;
-        window.location.href = 'index.html';
+    } else if (user && user.emailVerified) {
+        popupNotifier.success('¡Inicio de sesión exitoso!', 'Inicio exitoso');
+        const modal = document.getElementById('loginModal');
+        if (modal) modal.style.display = 'none';
+        if (window.location.pathname.includes('/auth/login') && !loginRedirectTriggered) {
+            loginRedirectTriggered = true;
+            window.location.href = 'index.html';
+        }
     }
 });
 
 document.addEventListener('app:userLoggedOut', () => {
-    // Avoid redirect loop: stay on login page when already there
-    if (window.location.pathname.includes('/auth/login')) {
-        return;
-    }
-    window.location.href = 'auth/login.html';
+    const modal = document.getElementById('loginModal');
+    if (modal) modal.style.display = 'none';
 });
 
 if (document.readyState === 'loading') {
