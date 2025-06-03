@@ -63,9 +63,9 @@ project/
    cd polkadot-educational-platform
    ```
 
-2. Install dependencies:
+2. Set up the development environment:
    ```bash
-   npm install
+   ./scripts/setup_dev_env.sh
    ```
 
 3. Start the development server:
