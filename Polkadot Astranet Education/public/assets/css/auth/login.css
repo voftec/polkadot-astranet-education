@@ -1,0 +1,14 @@
+.auth-widget {
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 300px;
+}
+.auth-widget.hidden { display: none; }
+.auth-widget h2 { margin-top: 0; }
+.auth-button { width: 100%; margin-top: 10px; padding: 8px; }
+.password-container { display: flex; align-items: center; }
+.password-container input { flex: 1; }
+.toggle-password { background: none; border: none; cursor: pointer; }
+.switch-auth { text-align: center; margin-top: 10px; }
