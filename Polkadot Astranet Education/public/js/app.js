@@ -175,8 +175,9 @@ function setupEventListeners() {
     const startCrossChainDemo = document.getElementById('startCrossChainDemo');
     if (startCrossChainDemo) startCrossChainDemo.addEventListener('click', startCrossChainDemoHandler);
     
-    const runContractSandboxBtn = document.getElementById('runContractSandboxBtn'); // Assuming ID for sandbox run button
-    if (runContractSandboxBtn) runContractSandboxBtn.addEventListener('click', runContractInSandbox);
+    // Smart contract sandbox run button
+    const runContractBtn = document.getElementById('runContract');
+    if (runContractBtn) runContractBtn.addEventListener('click', runContractInSandbox);
 
     const networkSelectElement = document.getElementById('networkSelect');
     if (networkSelectElement) {
@@ -781,9 +782,9 @@ function loadContractTemplate(templateName) {
 function runContractInSandbox() {
     // This remains a simulation as client-side compilation is out of scope
     console.log('Running contract in sandbox (simulation)...');
-    const contractLanguage = document.getElementById('contractLanguageSelect')?.value; // Assuming a select for language
-    const contractCodeEditor = document.getElementById('contractCodeEditor'); // Assuming an editor element
-    const contractOutput = document.getElementById('contractSandboxOutput');
+    const contractLanguage = document.getElementById('contractLanguage')?.value;
+    const contractCodeEditor = document.getElementById('contractEditor');
+    const contractOutput = document.getElementById('contractOutput');
     
     if (!contractCodeEditor || !contractOutput) return;
     const code = contractCodeEditor.value || contractCodeEditor.textContent; // For textarea or div
