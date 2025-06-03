@@ -319,6 +319,28 @@ img {
   margin-bottom: var(--spacing-sm);
 }
 
+/* ===== Learning Modules ===== */
+.module-card {
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.progress-bar-container {
+  background-color: var(--background-alt);
+  border-radius: var(--border-radius-sm);
+  height: 8px;
+  margin: var(--spacing-sm) 0;
+}
+
+.progress-bar {
+  background-color: var(--primary);
+  height: 100%;
+  width: 0;
+  border-radius: var(--border-radius-sm);
+}
+
 /* ===== Sections ===== */
 .section {
   padding: var(--spacing-xxl) 0;
@@ -700,4 +722,14 @@ img {
 
 .modal.show {
   display: flex;
+}
+
+/* ===== Learning Module Content ===== */
+.learning-module-content {
+  display: none;
+  padding: var(--spacing-lg) 0;
+}
+
+.learning-module-content h3 {
+  margin-top: 0;
 }
