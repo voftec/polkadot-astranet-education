@@ -621,3 +621,29 @@ img {
 .px-3 { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
 .px-4 { padding-left: var(--spacing-lg); padding-right: var(--spacing-lg); }
 .px-5 { padding-left: var(--spacing-xl); padding-right: var(--spacing-xl); }
+
+/* ===== Modal ===== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--background);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  width: 90%;
+  max-width: 500px;
+}
+
+.modal.show {
+  display: flex;
+}
