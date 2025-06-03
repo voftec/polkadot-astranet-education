@@ -6,6 +6,10 @@
  * integrates the Polkadot framework with Firebase functionality.
  */
 
+import PolkadotConnector from './framework/polkadot-connector.js';
+import BlockchainSelector from './framework/blockchain-selector.js';
+import ContractDeployer from './framework/contract-deployer.js';
+
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize components
@@ -90,11 +94,6 @@ function initializePolkadot() {
     
     console.log('Polkadot framework initialized');
 }
-
-/**
- * Initialize Firebase components
- */
-
 
 /**
  * Set up event listeners for UI interactions
