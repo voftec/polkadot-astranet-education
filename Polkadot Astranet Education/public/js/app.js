@@ -65,12 +65,9 @@ function initializePolkadot() {
             connector: connector,
             defaultChain: 'polkadot'
         });
-        
-        // Initialize contract deployer
-        const deployer = new ContractDeployer({
-            connector: connector,
-            selector: selector
-        });
+
+        // Initialize contract deployer with connector instance
+        const deployer = new ContractDeployer(connector);
         
         // Store instances in window for global access
         window.polkadotConnector = connector;
