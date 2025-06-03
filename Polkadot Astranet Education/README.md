@@ -1,6 +1,6 @@
 # Polkadot Educational Web Platform
 
-A comprehensive educational platform for learning about Polkadot blockchain technology, the Polkadot Virtual Machine (PVM), and smart contract development. This platform integrates with Firebase for authentication and data storage, and connects to the Polkadot blockchain for real-world interaction.
+A comprehensive educational platform for learning about Polkadot blockchain technology, the Polkadot Virtual Machine (PVM), and smart contract development. The demo connects to the Polkadot blockchain for real-world interaction. Firebase integration is disabled in this version.
 
 ## Features
 
@@ -8,7 +8,6 @@ A comprehensive educational platform for learning about Polkadot blockchain tech
 - **Blockchain Explorer**: Browse blocks, transactions, accounts, and validators on the Polkadot network
 - **Smart Contract Deployment**: Deploy and interact with smart contracts directly from the platform
 - **User Dashboard**: Track learning progress, manage deployed contracts, and view transaction history
-- **Firebase Integration**: Authentication, data storage, and blockchain interaction tracking
 - **Polkadot Framework**: JavaScript framework for interacting with Polkadot blockchain networks
 
 ## Project Structure

@@ -47,15 +47,7 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 
-                <div class="auth-buttons" id="authButtons">
-                    <button class="btn btn-outline" id="loginBtn">Login</button>
-                    <button class="btn btn-primary" id="signupBtn">Sign Up</button>
-                </div>
-                
-                <div class="user-profile" id="userProfile" style="display: none;">
-                    <img src="" alt="User Profile" id="userProfileImg">
-                    <span id="userName"></span>
-                </div>
+                <!-- Authentication UI removed for demo mode -->
             </nav>
         </div>
     </header>
@@ -623,7 +615,7 @@ contract Flipper {
             <div class="dashboard-container">
                 <div class="dashboard-header">
                     <div class="user-welcome" id="userWelcome">
-                        <h3>Welcome, <span id="dashboardUserName">User</span>!</h3>
+                        <h3>Welcome, <span id="dashboardUserName">Guest</span>!</h3>
                         <p>Your learning journey and blockchain activities are tracked here.</p>
                     </div>
                     <div class="dashboard-actions">
@@ -820,59 +812,7 @@ contract Flipper {
         </div>
     </footer>
 
-    <!-- Login Modal -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <span class="modal-close" id="closeLoginModal">&times;</span>
-            <h2>Login</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="loginEmail" class="form-label">Email</label>
-                    <input type="email" id="loginEmail" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword" class="form-label">Password</label>
-                    <input type="password" id="loginPassword" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
-            <div class="modal-footer">
-                <p>Don't have an account? <a href="#" id="showSignupModal">Sign Up</a></p>
-                <p><a href="#" id="forgotPassword">Forgot Password?</a></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Signup Modal -->
-    <div class="modal" id="signupModal">
-        <div class="modal-content">
-            <span class="modal-close" id="closeSignupModal">&times;</span>
-            <h2>Sign Up</h2>
-            <form id="signupForm">
-                <div class="form-group">
-                    <label for="signupName" class="form-label">Full Name</label>
-                    <input type="text" id="signupName" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupEmail" class="form-label">Email</label>
-                    <input type="email" id="signupEmail" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupPassword" class="form-label">Password</label>
-                    <input type="password" id="signupPassword" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" id="signupConfirmPassword" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
-            </form>
-            <div class="modal-footer">
-                <p>Already have an account? <a href="#" id="showLoginModal">Login</a></p>
-            </div>
-        </div>
-    </div>
-
+    <!-- Authentication modals removed -->
     <!-- Polkadot.js API -->
     <script src="https://cdn.jsdelivr.net/npm/@polkadot/api@9.14.1/bundle-polkadot-api.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.44.6/bundle-polkadot-extension-dapp.min.js"></script>
@@ -880,7 +820,6 @@ contract Flipper {
     <!-- Code Editor (Monaco) -->
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/loader.js"></script>
 
-    <!-- Custom JavaScript -->
     <script type="module" src="js/framework/polkadot-connector.js"></script>
     <script type="module" src="js/framework/blockchain-selector.js"></script>
     <script type="module" src="js/framework/contract-deployer.js"></script>
