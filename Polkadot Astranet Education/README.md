@@ -55,13 +55,6 @@ project/
 - npm (v6.0.0 or higher)
 - Polkadot.js extension (for wallet integration)
 
-### Setup Instructions
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/polkadot-educational-platform.git
-   cd polkadot-educational-platform
-   ```
 
 2. Set up the development environment:
    ```bash
