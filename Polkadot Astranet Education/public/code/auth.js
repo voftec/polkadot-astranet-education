@@ -28,6 +28,11 @@ const auth = getAuth(app);
 const rtdb = getDatabase(app);
 const storage = getStorage(app);
 
+// popup-notify.js attaches the notifier to the window object. Modules don't
+// expose global variables automatically, so reference it explicitly to avoid
+// ReferenceErrors during authentication flows.
+const popupNotifier = window.popupNotifier;
+
 let currentAuthUser = null;
 let loginRedirectTriggered = false;
 
