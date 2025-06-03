@@ -361,8 +361,8 @@ class ContractDeployer {
 // Default contract templates
 ContractDeployer.DEFAULT_TEMPLATES = [
   {
-    id: 'erc20',
-    name: 'ERC-20 Token',
+    id: 'token',
+    name: 'Token Contract',
     description: 'Standard ERC-20 token contract',
     category: 'tokens',
     language: 'ink',
@@ -462,9 +462,9 @@ mod erc20 {
     `
   },
   {
-    id: 'flipper',
-    name: 'Flipper',
-    description: 'Simple boolean flip contract',
+    id: 'nft',
+    name: 'NFT Collection',
+    description: 'Simple NFT collection contract',
     category: 'examples',
     language: 'ink',
     source: `
@@ -504,9 +504,9 @@ mod flipper {
     `
   },
   {
-    id: 'incrementer',
-    name: 'Incrementer',
-    description: 'Simple counter contract',
+    id: 'storage',
+    name: 'Simple Storage',
+    description: 'Basic storage contract',
     category: 'examples',
     language: 'ink',
     source: `
