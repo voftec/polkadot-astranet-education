@@ -15,13 +15,22 @@ const rtdb = getDatabase(app);
 
 const loginBtn = document.getElementById('loginNavBtn');
 
+function progressRef(uid) {
+  return rtdbRef(rtdb, `users/${uid}/polkadot-astranet-education/progress`);
+}
+
 async function fetchProgress(uid) {
-  const snap = await get(rtdbRef(rtdb, `users/${uid}/progress`));
-  return snap.exists() ? snap.val() : 0;
+  const ref = progressRef(uid);
+  const snap = await get(ref);
+  if (snap.exists()) {
+    return snap.val();
+  }
+  await set(ref, 0);
+  return 0;
 }
 
 async function saveProgress(uid, progress) {
-  await set(rtdbRef(rtdb, `users/${uid}/progress`), progress);
+  await set(progressRef(uid), progress);
 }
 
 // Update UI when progress is loaded
