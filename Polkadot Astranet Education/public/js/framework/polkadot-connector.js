@@ -37,7 +37,9 @@ class PolkadotConnector {
       const wsProvider = new WsProvider(this.networkEndpoint);
       
       // Create the API instance
-      this.api = await ApiPromise.create({ provider: wsProvider });
+      // noInitWarn suppresses warnings about custom RPC methods that are not
+      // decorated by the library but do not impact core functionality
+      this.api = await ApiPromise.create({ provider: wsProvider, noInitWarn: true });
       
       // Wait for the API to be ready
       await this.api.isReady;

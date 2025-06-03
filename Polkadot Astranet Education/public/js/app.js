@@ -466,7 +466,7 @@ async function loadAccounts() {
         updateAccountsTable(accounts);
     } catch (error) {
         console.error('Error loading accounts:', error);
-        accountsTableBody.innerHTML = `<tr><td colspan="3" class="text-center">Error loading accounts. ${error.message}</td></tr>`;
+        accountsTableBody.innerHTML = `<tr><td colspan="4" class="text-center">Error loading accounts. ${error.message}</td></tr>`;
     }
 }
 
@@ -474,7 +474,7 @@ function updateAccountsTable(accounts) {
     const accountsTableBody = document.querySelector('#accountsTable tbody');
     if (!accountsTableBody) return;
     if (!accounts || accounts.length === 0) {
-        accountsTableBody.innerHTML = `<tr><td colspan="3" class="text-center">No accounts to display.</td></tr>`;
+        accountsTableBody.innerHTML = `<tr><td colspan="4" class="text-center">No accounts to display.</td></tr>`;
         return;
     }
     accountsTableBody.innerHTML = accounts.map((acc, index) => `
@@ -482,6 +482,7 @@ function updateAccountsTable(accounts) {
             <td>${index + 1}</td>
             <td>${acc.address.substring(0,15)}...${acc.address.substring(acc.address.length-10)}</td>
             <td>${(parseFloat(acc.balance) / Math.pow(10, polkadotConnector?.api?.registry.chainDecimals[0] || 12)).toFixed(4)} ${polkadotConnector?.api?.registry.chainTokens[0] || 'UNIT'}</td>
+            <td>${acc.nonce}</td>
         </tr>
     `).join('');
 }
