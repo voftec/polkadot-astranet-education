@@ -376,6 +376,32 @@ class PolkadotConnector {
   }
 
   /**
+   * Retrieve basic information about an account.
+   * Includes free balance and nonce. Transaction count is not
+   * readily available without an indexer so it is returned as 'N/A'.
+   * @param {string} address - The account address
+   * @returns {Promise<Object>} - { address, balance, nonce, transactions }
+   */
+  async getAccount(address) {
+    if (!this.isConnected()) {
+      throw new Error('Not connected to Polkadot network');
+    }
+
+    try {
+      const { data, nonce } = await this.api.query.system.account(address);
+      return {
+        address,
+        balance: data.free.toString(),
+        nonce: nonce.toNumber(),
+        transactions: 'N/A'
+      };
+    } catch (error) {
+      console.error(`Error getting account ${address}:`, error);
+      throw error;
+    }
+  }
+
+  /**
    * Sign and send a transaction using a mnemonic.
    * For extension-based accounts, signing should be handled via extension's signer.
    * @param {Object} transaction - The transaction to send { module, method, params }
