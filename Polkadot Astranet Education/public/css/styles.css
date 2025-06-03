@@ -395,6 +395,17 @@ img {
   display: block;
 }
 
+/* ===== Explorer and Dashboard Tabs ===== */
+.explorer-content,
+.dashboard-content {
+  display: none;
+}
+
+.explorer-content.active,
+.dashboard-content.active {
+  display: block;
+}
+
 /* ===== Code Blocks ===== */
 .code-block {
   background-color: var(--dark-gray);
