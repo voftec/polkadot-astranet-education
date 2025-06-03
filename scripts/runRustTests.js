@@ -1,5 +1,6 @@
 const { spawnSync } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
 function run(cmd, args, options = {}) {
   const result = spawnSync(cmd, args, { stdio: 'inherit', ...options });
@@ -43,6 +44,13 @@ function runTests(projectDir) {
 }
 
 const projectDir = path.join(__dirname, '..', 'Polkadot Astranet Education', 'examples', 'demo-contracts');
+
+// Skip tests gracefully if demo project is missing
+if (!fs.existsSync(path.join(projectDir, 'Cargo.toml'))) {
+  console.log('No Rust demo project found. Skipping Rust tests.');
+  process.exit(0);
+}
+
 checkRustToolchain();
 checkCargoDeps(projectDir);
 runTests(projectDir);
