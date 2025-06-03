@@ -343,14 +343,19 @@ class ContractDeployer {
       // For now, we'll just check if the contract exists and is callable
       const contract = deployedContract.contract;
       
-      // Try to call a method to verify the contract is accessible
-      // This is just a basic check that the contract exists and is callable
-      const result = await contract.query.hasOwnProperty(
+      // Try to call the first available query method as a simple liveness check
+      const [methodName] = Object.keys(contract.query);
+      if (!methodName) {
+        console.warn('No query methods found to verify contract');
+        return false;
+      }
+
+      const result = await contract.query[methodName](
         this.connector.accounts[0]?.address || contractAddress,
-        0
+        { value: 0, gasLimit: null }
       );
-      
-      return !result.result.isErr;
+
+      return result.result.isOk;
     } catch (error) {
       console.error('Error verifying contract:', error);
       return false;
