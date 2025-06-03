@@ -448,7 +448,11 @@ function updateTransactionsTable(transactions) {
 async function loadAccounts() {
     const accountsTableBody = document.querySelector('#accountsTable tbody');
     if (!accountsTableBody) return;
-    accountsTableBody.innerHTML = `<tr><td colspan="3" class="text-center">Loading accounts...</td></tr>`;
+    accountsTableBody.innerHTML = `<tr><td colspan="4" class="text-center">Loading accounts...</td></tr>`;
+    if (!polkadotConnector || !polkadotConnector.isConnected()) {
+        accountsTableBody.innerHTML = `<tr><td colspan="4" class="text-center">Not connected to network.</td></tr>`;
+        return;
+    }
     try {
         const accounts = await polkadotConnector.getTopAccounts(5);
         updateAccountsTable(accounts);

@@ -25,24 +25,30 @@ class PolkadotConnector {
    * Connect to the Polkadot network
    * @returns {Promise} - Resolves when connected
    */
-  async connect() {
+  async connect(timeoutMs = 15000) {
+    let wsProvider;
     try {
       // Dynamic import using stable versions for Polkadot libraries
       // Use a recent version of the Polkadot API to support modern runtime features
       const { ApiPromise, WsProvider } = await import('https://cdn.jsdelivr.net/npm/@polkadot/api@16.1.1/+esm');
-      
+
       console.log(`Connecting to Polkadot network at ${this.networkEndpoint}...`);
-      
+
       // Create a WebSocket provider with the endpoint
-      const wsProvider = new WsProvider(this.networkEndpoint);
-      
-      // Create the API instance
-      // noInitWarn suppresses warnings about custom RPC methods that are not
-      // decorated by the library but do not impact core functionality
-      this.api = await ApiPromise.create({ provider: wsProvider, noInitWarn: true });
-      
-      // Wait for the API to be ready
-      await this.api.isReady;
+      wsProvider = new WsProvider(this.networkEndpoint);
+
+      // Promise that resolves when ApiPromise is ready
+      const connectPromise = (async () => {
+        this.api = await ApiPromise.create({ provider: wsProvider, noInitWarn: true });
+        await this.api.isReady;
+      })();
+
+      // Timeout to avoid hanging forever if the node is unreachable
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Connection timed out')), timeoutMs);
+      });
+
+      await Promise.race([connectPromise, timeoutPromise]);
       
       // Get chain information
       const [chain, nodeName, nodeVersion] = await Promise.all([
@@ -67,6 +73,9 @@ class PolkadotConnector {
       };
     } catch (error) {
       console.error('Failed to connect to Polkadot network:', error);
+      if (wsProvider && typeof wsProvider.disconnect === 'function') {
+        try { wsProvider.disconnect(); } catch (_) { /* ignore */ }
+      }
       this.api = null; // Ensure API is null on connection failure
       this.connected = false;
       this._notifyConnectionListeners(false, error);
