@@ -39,7 +39,7 @@ class ContractDeployer {
       console.log('Deploying contract to network...');
       
       // Dynamic import to ensure compatibility with browser environments
-      const { ContractPromise } = await import('@polkadot/api-contract');
+      const { ContractPromise } = await import('https://cdn.jsdelivr.net/npm/@polkadot/api-contract@16/+esm');
       
       // Validate contract data
       if (!contractData.abi || !contractData.wasm) {
