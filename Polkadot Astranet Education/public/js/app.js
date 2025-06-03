@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize components
     initializeUI();
     initializePolkadot();
-    initializeFirebase();
     setupEventListeners();
 });
 
@@ -95,52 +94,7 @@ function initializePolkadot() {
 /**
  * Initialize Firebase components
  */
-function initializeFirebase() {
-    console.log('Initializing Firebase components...');
-    
-    try {
-        // Check if Firebase is already initialized
-        if (!window.firebaseApp) {
-            // Initialize Firebase with configuration
-            const firebaseConfig = FirebaseConfig.getConfig();
-            window.firebaseApp = firebase.initializeApp(firebaseConfig);
-        }
-        
-        // Initialize authentication
-        const auth = new FirebaseAuth(window.firebaseApp);
-        
-        // Initialize database
-        const database = new FirebaseDatabase(window.firebaseApp);
-        
-        // Initialize blockchain integration
-        const blockchainIntegration = new BlockchainIntegration({
-            database: database,
-            connector: window.polkadotConnector
-        });
-        
-        // Store instances in window for global access
-        window.firebaseAuth = auth;
-        window.firebaseDatabase = database;
-        window.blockchainIntegration = blockchainIntegration;
-        
-        // Check authentication state
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                console.log('User is signed in:', user.email);
-                updateUIForAuthenticatedUser(user);
-                loadUserData(user.uid);
-            } else {
-                console.log('User is signed out');
-                updateUIForUnauthenticatedUser();
-            }
-        });
-    } catch (error) {
-        console.error('Error initializing Firebase:', error);
-        showErrorNotification('Failed to initialize Firebase. Please check your connection and try again.');
-    }
-    
-    console.log('Firebase components initialized');
-}
+
 
 /**
  * Set up event listeners for UI interactions
@@ -180,88 +134,7 @@ function setupEventListeners() {
         darkModeToggle.addEventListener('click', toggleDarkMode);
     }
     
-    // Authentication buttons
-    const loginBtn = document.getElementById('loginBtn');
-    const signupBtn = document.getElementById('signupBtn');
-    if (loginBtn) loginBtn.addEventListener('click', showLoginModal);
-    if (signupBtn) signupBtn.addEventListener('click', showSignupModal);
-    
-    // Modal close buttons
-    document.querySelectorAll('.modal-close').forEach(closeBtn => {
-        closeBtn.addEventListener('click', (e) => {
-            const modal = e.target.closest('.modal');
-            if (modal) modal.style.display = 'none';
-        });
-    });
-    
-    // Modal switch links
-    const showLoginModalLink = document.getElementById('showLoginModal');
-    const showSignupModalLink = document.getElementById('showSignupModal');
-    if (showLoginModalLink) {
-        showLoginModalLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('signupModal').style.display = 'none';
-            showLoginModal();
-        });
-    }
-    if (showSignupModalLink) {
-        showSignupModalLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('loginModal').style.display = 'none';
-            showSignupModal();
-        });
-    }
-    
-    // Login form submission
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            if (window.firebaseAuth) {
-                window.firebaseAuth.signIn(email, password)
-                    .then(() => {
-                        document.getElementById('loginModal').style.display = 'none';
-                        showSuccessNotification('Successfully logged in!');
-                    })
-                    .catch(error => {
-                        console.error('Login error:', error);
-                        showErrorNotification('Login failed: ' + error.message);
-                    });
-            }
-        });
-    }
-    
-    // Signup form submission
-    const signupForm = document.getElementById('signupForm');
-    if (signupForm) {
-        signupForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('signupConfirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                showErrorNotification('Passwords do not match');
-                return;
-            }
-            
-            if (window.firebaseAuth) {
-                window.firebaseAuth.signUp(email, password, name)
-                    .then(() => {
-                        document.getElementById('signupModal').style.display = 'none';
-                        showSuccessNotification('Account created successfully!');
-                    })
-                    .catch(error => {
-                        console.error('Signup error:', error);
-                        showErrorNotification('Signup failed: ' + error.message);
-                    });
-            }
-        });
-    }
+
     
     // Connect wallet button
     const connectWalletBtn = document.getElementById('connectWalletBtn');
@@ -464,16 +337,7 @@ function updateProgressCircle(circle, progress) {
 /**
  * Show login modal
  */
-function showLoginModal() {
-    document.getElementById('loginModal').style.display = 'block';
-}
 
-/**
- * Show signup modal
- */
-function showSignupModal() {
-    document.getElementById('signupModal').style.display = 'block';
-}
 
 /**
  * Scroll to section
@@ -490,51 +354,7 @@ function scrollToSection(sectionId) {
  * Update UI for authenticated user
  * @param {Object} user - Firebase user object
  */
-function updateUIForAuthenticatedUser(user) {
-    // Hide auth buttons, show user profile
-    const authButtons = document.getElementById('authButtons');
-    const userProfile = document.getElementById('userProfile');
-    
-    if (authButtons && userProfile) {
-        authButtons.style.display = 'none';
-        userProfile.style.display = 'flex';
-        
-        // Update user profile info
-        const userProfileImg = document.getElementById('userProfileImg');
-        const userName = document.getElementById('userName');
-        
-        if (userProfileImg && userName) {
-            userProfileImg.src = user.photoURL || 'assets/default-avatar.png';
-            userName.textContent = user.displayName || user.email;
-        }
-    }
-    
-    // Update dashboard user name
-    const dashboardUserName = document.getElementById('dashboardUserName');
-    if (dashboardUserName) {
-        dashboardUserName.textContent = user.displayName || user.email;
-    }
-}
 
-/**
- * Update UI for unauthenticated user
- */
-function updateUIForUnauthenticatedUser() {
-    // Show auth buttons, hide user profile
-    const authButtons = document.getElementById('authButtons');
-    const userProfile = document.getElementById('userProfile');
-    
-    if (authButtons && userProfile) {
-        authButtons.style.display = 'flex';
-        userProfile.style.display = 'none';
-    }
-    
-    // Update dashboard user name
-    const dashboardUserName = document.getElementById('dashboardUserName');
-    if (dashboardUserName) {
-        dashboardUserName.textContent = 'Guest';
-    }
-}
 
 /**
  * Load user data from Firebase
@@ -1364,14 +1184,18 @@ function connectWallet() {
         })
         .catch(error => {
             console.error('Error connecting wallet:', error);
-            
+
             // Reset button
             if (connectWalletBtn) {
                 connectWalletBtn.disabled = false;
                 connectWalletBtn.innerHTML = 'Connect Wallet';
             }
-            
-            showErrorNotification('Failed to connect wallet: ' + error.message);
+
+            if (error.message && error.message.includes('extension')) {
+                alert('Polkadot.js extension is required. Please install it from https://polkadot.js.org/extension/');
+            } else {
+                showErrorNotification('Failed to connect wallet: ' + error.message);
+            }
         });
 }
 

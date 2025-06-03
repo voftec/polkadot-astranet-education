@@ -157,6 +157,28 @@ class PolkadotConnector {
   }
 
   /**
+   * Connect to the browser wallet via Polkadot.js extension
+   * @returns {Promise<Object>} Selected account information
+   */
+  async connectWallet() {
+    if (!window.injectedWeb3 || Object.keys(window.injectedWeb3).length === 0) {
+      throw new Error('Polkadot.js extension not found');
+    }
+
+    const { web3Enable, web3Accounts } = await import('@polkadot/extension-dapp');
+    await web3Enable('Astranet Education Demo');
+    const accounts = await web3Accounts();
+
+    if (!accounts.length) {
+      throw new Error('No accounts available in the extension');
+    }
+
+    this.accounts = accounts;
+    const account = accounts[0];
+    return { address: account.address, name: account.meta.name };
+  }
+
+  /**
    * Get the current network information
    * @returns {Promise<Object>} - Network information
    */
