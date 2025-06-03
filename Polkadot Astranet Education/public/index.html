@@ -873,27 +873,17 @@ contract Flipper {
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    
     <!-- Polkadot.js API -->
     <script src="https://cdn.jsdelivr.net/npm/@polkadot/api@9.14.1/bundle-polkadot-api.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.44.6/bundle-polkadot-extension-dapp.min.js"></script>
-    
+
     <!-- Code Editor (Monaco) -->
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/loader.js"></script>
-    
+
     <!-- Custom JavaScript -->
-    <script src="js/firebase/config.js"></script>
-    <script src="js/firebase/auth.js"></script>
-    <script src="js/firebase/database.js"></script>
-    <script src="js/firebase/blockchain-integration.js"></script>
-    <script src="js/framework/polkadot-connector.js"></script>
-    <script src="js/framework/blockchain-selector.js"></script>
-    <script src="js/framework/contract-deployer.js"></script>
-    <script src="js/app.js"></script>
+    <script type="module" src="js/framework/polkadot-connector.js"></script>
+    <script type="module" src="js/framework/blockchain-selector.js"></script>
+    <script type="module" src="js/framework/contract-deployer.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
