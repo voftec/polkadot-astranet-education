@@ -54,7 +54,6 @@ project/
 
 - Node.js (v14.0.0 or higher)
 - npm (v6.0.0 or higher)
-- Firebase account
 - Polkadot.js extension (for wallet integration)
 
 ### Setup Instructions
@@ -70,34 +69,12 @@ project/
    npm install
    ```
 
-3. Configure Firebase:
-   - Create a Firebase project at [https://console.firebase.google.com/](https://console.firebase.google.com/)
-   - Enable Authentication, Firestore Database, and Realtime Database
-   - Create a web app in your Firebase project
-   - Copy the Firebase configuration
-   - Update the configuration in `public/js/firebase/config.js`
-
-4. Configure environment variables:
-   - Create a `.env` file in the root directory
-   - Add the following variables:
-     ```
-     FIREBASE_API_KEY=your_api_key
-     FIREBASE_AUTH_DOMAIN=your_auth_domain
-     FIREBASE_PROJECT_ID=your_project_id
-     FIREBASE_STORAGE_BUCKET=your_storage_bucket
-     FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-     FIREBASE_APP_ID=your_app_id
-     FIREBASE_MEASUREMENT_ID=your_measurement_id
-     FIREBASE_DATABASE_URL=your_database_url
-     RECAPTCHA_SITE_KEY=your_recaptcha_site_key
-     ```
-
-5. Start the development server:
+3. Start the development server:
    ```bash
    npm start
    ```
 
-6. Open your browser and navigate to `http://localhost:3000`
+4. Open your browser and navigate to `http://localhost:3000`
 
 ## Usage
 
