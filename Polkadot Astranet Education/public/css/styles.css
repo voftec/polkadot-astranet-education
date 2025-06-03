@@ -406,6 +406,19 @@ img {
   display: block;
 }
 
+/* ===== Explorer Search Results ===== */
+.explorer-search-results {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--background-alt);
+}
+
+.explorer-search-results .error {
+  color: var(--polkadot-pink);
+}
+
 /* ===== Code Blocks ===== */
 .code-block {
   background-color: var(--dark-gray);
