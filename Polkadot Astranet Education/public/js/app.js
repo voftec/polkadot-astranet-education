@@ -10,6 +10,7 @@
 import PolkadotConnector from './framework/polkadot-connector.js';
 import BlockchainSelector from './framework/blockchain-selector.js';
 import ContractDeployer from './framework/contract-deployer.js';
+import { parachains } from './parachains-data.js';
 
 // Global references to Polkadot framework instances
 let polkadotConnector;
@@ -43,6 +44,7 @@ function initializeUI() {
     initializeMobileMenu();
     initializeModals();
     initializeProgressCircles(); // Will show static progress or 0 if no data
+    renderParachainsList();
     updateDashboardWithStaticData(); // Dashboard will show static data
     console.log('UI components initialized');
 }
@@ -382,6 +384,20 @@ function updateTransactionsList(transactions) {
     transactionsList.innerHTML = transactions.length > 0 ?
         transactions.map(tx => `<li>Tx: ${tx.hash.substring(0,15)}... (${tx.status})</li>`).join('') :
         '<p>No transactions found.</p>';
+}
+
+function renderParachainsList() {
+    const container = document.getElementById('parachainsList');
+    if (!container) return;
+    container.innerHTML = parachains.map(p => `
+        <div class="parachain-card">
+            <h4>${p.name}</h4>
+            <p>${p.description}</p>
+            <p><strong>Great for:</strong> ${p.goodFor.join(', ')}</p>
+            <p><strong>Not ideal for:</strong> ${p.badFor.join(', ')}</p>
+            <p><strong>Smart Contract Support:</strong> ${p.smartContractSupport.join(', ')}</p>
+        </div>
+    `).join('');
 }
 
 async function loadBlockchainData() {

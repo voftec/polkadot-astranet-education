@@ -122,6 +122,8 @@
                 <button class="tab-button" data-tab="pvm">PVM</button>
                 <button class="tab-button" data-tab="smart-contracts">Smart Contracts</button>
                 <button class="tab-button" data-tab="interoperability">Interoperability</button>
+                <button class="tab-button" data-tab="parachains">Parachains</button>
+                <button class="tab-button" data-tab="pallets">Pallets</button>
             </div>
             
             <!-- Basics Tab -->
@@ -372,6 +374,57 @@ contract Flipper {
                     <div id="crossChainDemo" class="demo">
                         <!-- Interactive demo will be loaded here -->
                         <button class="btn btn-primary" id="startCrossChainDemo">Start Demo</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parachains Tab -->
+            <div class="tab-content" id="parachains-content">
+                <h3>Understanding Parachains</h3>
+                <p>Parachains are specialized blockchains that run alongside the Relay Chain, benefiting from its shared security and interoperability.</p>
+                <div class="row">
+                    <div class="col">
+                        <h4>Key Characteristics</h4>
+                        <ul>
+                            <li>Customizable functionality for specific use cases</li>
+                            <li>Independent governance models</li>
+                            <li>Shared security via the Relay Chain</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <img src="assets/polkadot-parachain.png" alt="Parachain Illustration" class="img-fluid">
+                    </div>
+                </div>
+                <div id="parachainsList" class="parachains-list"></div>
+            </div>
+
+            <!-- Pallets Tab -->
+            <div class="tab-content" id="pallets-content">
+                <h3>Substrate Pallets</h3>
+                <p>Pallets are reusable modules of blockchain logic used to build feature-rich parachains quickly.</p>
+                <div class="row">
+                    <div class="col">
+                        <h4>Common Pallets</h4>
+                        <ul>
+                            <li>Balances and accounts management</li>
+                            <li>Governance and democracy modules</li>
+                            <li>Staking and session management</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <div class="code-block">
+                            <pre><code>// Example of including a pallet
+construct_runtime!(
+    pub enum Runtime where
+        Block = Block,
+        NodeBlock = opaque::Block,
+        UncheckedExtrinsic = UncheckedExtrinsic
+    ) {
+        System: frame_system,
+        Balances: pallet_balances,
+    }
+);</code></pre>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -931,6 +984,7 @@ contract Flipper {
     <script type="module" src="js/framework/polkadot-connector.js"></script>
     <script type="module" src="js/framework/blockchain-selector.js"></script>
     <script type="module" src="js/framework/contract-deployer.js"></script>
+    <script type="module" src="js/parachains-data.js"></script>
     <script type="module" src="js/app.js"></script>
     <script type="module" src="code/auth.js"></script>
     <script type="module" src="code/progress.js"></script>
