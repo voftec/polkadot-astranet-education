@@ -327,6 +327,18 @@ img {
   margin-bottom: var(--spacing-lg);
 }
 
+.parachain-card {
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  background-color: var(--background);
+}
+
+.parachains-list {
+  margin-top: var(--spacing-lg);
+}
+
 .progress-bar-container {
   background-color: var(--background-alt);
   border-radius: var(--border-radius-sm);

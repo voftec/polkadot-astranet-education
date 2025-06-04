@@ -73,9 +73,11 @@ project/
 ### Learning Modules
 
 1. Navigate to the "Learn" section
-2. Choose a learning module (Basics, Architecture, PVM, Smart Contracts, or Interoperability)
+2. Choose a learning module (Basics, Architecture, PVM, Smart Contracts, Interoperability, Parachains, or Pallets)
 3. Read the educational content and interact with the examples
 4. Complete quizzes to test your knowledge
+
+The **Parachains** module lists notable parachains in the Polkadot ecosystem with details about their purposes and smart contract support.
 
 ### Blockchain Explorer
 
