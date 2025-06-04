@@ -17,6 +17,8 @@ let blockchainSelector;
 let contractDeployer;
 let connectedWallet = null; // Store connected wallet info { address, name, source }
 let userProgress = 0;
+const moduleSequence = ['overview', 'basics', 'architecture'];
+let currentModuleIndex = -1;
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -196,6 +198,10 @@ function setupEventListeners() {
         networkSelectElement.addEventListener('change', handleNetworkChange);
     }
 
+    document.querySelectorAll('.next-module').forEach(button => {
+        button.addEventListener('click', handleNextModule);
+    });
+
     console.log('Event listeners set up');
 }
 
@@ -342,6 +348,7 @@ function updateLearningModulesWithStaticData() {
     const learningModulesContainer = document.getElementById('learningModules');
     if (!learningModulesContainer) return;
     const staticModules = [
+        { id: 'overview', title: 'Platform Overview', description: 'Get to know the site.', progress: 0, status: 'Not Started' },
         { id: 'basics', title: 'Introduction to Polkadot', description: 'Learn the fundamentals.', progress: 0, status: 'Not Started' },
         { id: 'architecture', title: 'Polkadot Architecture', description: 'Deep dive into the architecture.', progress: 0, status: 'Not Started' },
     ];
@@ -832,9 +839,8 @@ function startCrossChainDemoHandler() {
 
 function startLearningModule(moduleId) {
     console.log(`Starting learning module: ${moduleId}`);
-    // Navigate to the learning content for moduleId, e.g., by showing a specific div or loading content.
+    currentModuleIndex = moduleSequence.indexOf(moduleId);
     showSuccessNotification(`Navigating to ${moduleId} module.`);
-    // Example: show specific content section
     document.querySelectorAll('.learning-module-content').forEach(el => el.style.display = 'none');
     const moduleEl = document.getElementById(`module-${moduleId}-content`);
     if(moduleEl) moduleEl.style.display = 'block';
@@ -842,8 +848,18 @@ function startLearningModule(moduleId) {
     incrementUserProgress();
 }
 
+function handleNextModule(e) {
+    const nextId = e.currentTarget.getAttribute('data-next');
+    if (nextId) {
+        startLearningModule(nextId);
+    } else {
+        document.querySelectorAll('.learning-module-content').forEach(el => el.style.display = 'none');
+    }
+}
+
 function incrementUserProgress() {
-    userProgress = Math.min(100, userProgress + 34);
+    const step = Math.ceil(100 / moduleSequence.length);
+    userProgress = Math.min(100, userProgress + step);
     const circle = document.getElementById('learningProgressCircle');
     if(circle) updateProgressCircle(circle, userProgress);
     document.dispatchEvent(new CustomEvent('progress:save', { detail: userProgress }));
