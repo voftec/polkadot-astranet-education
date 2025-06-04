@@ -15,6 +15,7 @@ const rtdb = getDatabase(app);
 
 const loginBtn = document.getElementById('loginNavBtn');
 const loginModal = document.getElementById('loginModal');
+const userNameDisplay = document.getElementById('dashboardUserName');
 
 function openLoginModal(e) {
   if (e) e.preventDefault();
@@ -54,6 +55,10 @@ document.addEventListener('app:userLoggedIn', async (e) => {
   const progress = await fetchProgress(uid);
   updateProgressUI(progress);
   document.dispatchEvent(new CustomEvent('progress:loaded', { detail: progress }));
+  if (userNameDisplay) {
+    const name = e.detail.profile?.name || 'User';
+    userNameDisplay.textContent = name;
+  }
   if (loginBtn) {
     loginBtn.textContent = 'Logout';
     loginBtn.removeEventListener('click', openLoginModal);
@@ -64,6 +69,7 @@ document.addEventListener('app:userLoggedIn', async (e) => {
 
 document.addEventListener('app:userLoggedOut', () => {
   updateProgressUI(0);
+  if (userNameDisplay) userNameDisplay.textContent = 'Guest';
   if (loginBtn) {
     loginBtn.textContent = 'Login';
     loginBtn.removeEventListener('click', handleLogoutClick);
