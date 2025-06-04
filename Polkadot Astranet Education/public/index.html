@@ -190,6 +190,13 @@
                         <button class="btn btn-primary" id="loadArchitectureDiagram">Load Diagram</button>
                     </div>
                 </div>
+                <div class="interactive-demo">
+                    <h4>Quiz: Polkadot Architecture</h4>
+                    <div class="quiz" id="architectureQuiz">
+                        <p>Check your understanding of Polkadot architecture.</p>
+                        <button class="btn btn-primary" id="startArchitectureQuiz">Start Quiz</button>
+                    </div>
+                </div>
             </div>
             
             <!-- PVM Tab -->
@@ -256,6 +263,13 @@ console.log("Execution result:", result);</code></pre>
                         </tr>
                     </tbody>
                 </table>
+                <div class="interactive-demo">
+                    <h4>Quiz: PVM Fundamentals</h4>
+                    <div class="quiz" id="pvmQuiz">
+                        <p>Answer questions about the Polkadot Virtual Machine.</p>
+                        <button class="btn btn-primary" id="startPvmQuiz">Start Quiz</button>
+                    </div>
+                </div>
             </div>
             
             <!-- Smart Contracts Tab -->
@@ -335,11 +349,18 @@ contract Flipper {
                         <div class="sandbox-editor" id="contractEditor">
                             <!-- Code editor will be loaded here -->
                         </div>
-                        <div class="sandbox-output" id="contractOutput">
-                            <!-- Output will be displayed here -->
-                        </div>
+                    <div class="sandbox-output" id="contractOutput">
+                        <!-- Output will be displayed here -->
                     </div>
                 </div>
+                <div class="interactive-demo">
+                    <h4>Quiz: Smart Contracts</h4>
+                    <div class="quiz" id="smartContractsQuiz">
+                        <p>Test your knowledge of smart contract development.</p>
+                        <button class="btn btn-primary" id="startSmartContractsQuiz">Start Quiz</button>
+                    </div>
+                </div>
+            </div>
             </div>
             
             <!-- Interoperability Tab -->
@@ -376,6 +397,13 @@ contract Flipper {
                         <button class="btn btn-primary" id="startCrossChainDemo">Start Demo</button>
                     </div>
                 </div>
+                <div class="interactive-demo">
+                    <h4>Quiz: Interoperability</h4>
+                    <div class="quiz" id="interoperabilityQuiz">
+                        <p>Review cross-chain concepts with this quiz.</p>
+                        <button class="btn btn-primary" id="startInteroperabilityQuiz">Start Quiz</button>
+                    </div>
+                </div>
             </div>
 
             <!-- Parachains Tab -->
@@ -396,6 +424,13 @@ contract Flipper {
                     </div>
                 </div>
                 <div id="parachainsList" class="parachains-list"></div>
+                <div class="interactive-demo">
+                    <h4>Quiz: Parachains</h4>
+                    <div class="quiz" id="parachainsQuiz">
+                        <p>Assess your parachain knowledge.</p>
+                        <button class="btn btn-primary" id="startParachainsQuiz">Start Quiz</button>
+                    </div>
+                </div>
             </div>
 
             <!-- Pallets Tab -->
@@ -412,8 +447,8 @@ contract Flipper {
                         </ul>
                     </div>
                     <div class="col">
-                        <div class="code-block">
-                            <pre><code>// Example of including a pallet
+                <div class="code-block">
+                    <pre><code>// Example of including a pallet
 construct_runtime!(
     pub enum Runtime where
         Block = Block,
@@ -424,10 +459,17 @@ construct_runtime!(
         Balances: pallet_balances,
     }
 );</code></pre>
-                        </div>
-                    </div>
                 </div>
             </div>
+        </div>
+        <div class="interactive-demo">
+            <h4>Quiz: Pallets</h4>
+            <div class="quiz" id="palletsQuiz">
+                <p>Test your knowledge of Substrate pallets.</p>
+                <button class="btn btn-primary" id="startPalletsQuiz">Start Quiz</button>
+            </div>
+        </div>
+    </div>
         </div>
     </section>
 
@@ -685,14 +727,7 @@ construct_runtime!(
                         <h3>Welcome, <span id="dashboardUserName">Guest</span>!</h3>
                         <p>Your learning journey and blockchain activities are tracked here.</p>
                     </div>
-                    <div class="dashboard-actions">
-                        <button class="btn btn-outline" id="refreshDashboardBtn">
-                            <i class="fas fa-sync-alt"></i> Refresh
-                        </button>
-                        <button class="btn btn-primary" id="accountSettingsBtn">
-                            <i class="fas fa-cog"></i> Account Settings
-                        </button>
-                    </div>
+                    <!-- Dashboard actions removed -->
                 </div>
                 
                 <div class="dashboard-tabs">

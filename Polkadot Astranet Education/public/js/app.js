@@ -17,8 +17,10 @@ let polkadotConnector;
 let blockchainSelector;
 let contractDeployer;
 let connectedWallet = null; // Store connected wallet info { address, name, source }
-let userProgress = 0;
-const moduleSequence = ['overview', 'basics', 'architecture'];
+const QUIZZES = ['basics','architecture','pvm','smart-contracts','interoperability','parachains','pallets'];
+let completedQuizzes = new Set(JSON.parse(localStorage.getItem('completedQuizzes') || '[]'));
+let userProgress = Math.round((completedQuizzes.size / QUIZZES.length) * 100);
+const moduleSequence = QUIZZES;
 let currentModuleIndex = -1;
 
 // Wait for DOM to be fully loaded
@@ -181,6 +183,18 @@ function setupEventListeners() {
         
     const startBasicsQuiz = document.getElementById('startBasicsQuiz');
     if (startBasicsQuiz) startBasicsQuiz.addEventListener('click', startBasicsQuizHandler);
+    const startArchitectureQuiz = document.getElementById('startArchitectureQuiz');
+    if (startArchitectureQuiz) startArchitectureQuiz.addEventListener('click', startArchitectureQuizHandler);
+    const startPvmQuiz = document.getElementById('startPvmQuiz');
+    if (startPvmQuiz) startPvmQuiz.addEventListener('click', startPvmQuizHandler);
+    const startSmartContractsQuiz = document.getElementById('startSmartContractsQuiz');
+    if (startSmartContractsQuiz) startSmartContractsQuiz.addEventListener('click', startSmartContractsQuizHandler);
+    const startInteroperabilityQuiz = document.getElementById('startInteroperabilityQuiz');
+    if (startInteroperabilityQuiz) startInteroperabilityQuiz.addEventListener('click', startInteroperabilityQuizHandler);
+    const startParachainsQuiz = document.getElementById('startParachainsQuiz');
+    if (startParachainsQuiz) startParachainsQuiz.addEventListener('click', startParachainsQuizHandler);
+    const startPalletsQuiz = document.getElementById('startPalletsQuiz');
+    if (startPalletsQuiz) startPalletsQuiz.addEventListener('click', startPalletsQuizHandler);
     
     const loadArchitectureDiagram = document.getElementById('loadArchitectureDiagram');
     if (loadArchitectureDiagram) loadArchitectureDiagram.addEventListener('click', loadArchitectureDiagramHandler);
@@ -813,6 +827,13 @@ function runContractInSandbox() {
     if (modal) modal.style.display = 'flex';
 }
 
+function markQuizCompleted(id) {
+    if (completedQuizzes.has(id)) return;
+    completedQuizzes.add(id);
+    localStorage.setItem('completedQuizzes', JSON.stringify([...completedQuizzes]));
+    incrementUserProgress();
+}
+
 function startBasicsQuizHandler() {
     // Simple client-side quiz rendering
     console.log('Starting basics quiz...');
@@ -831,6 +852,121 @@ function startBasicsQuizHandler() {
         const answer = document.querySelector('input[name="q1_basics"]:checked')?.value;
         const resultEl = document.getElementById('basicsQuizResult');
         if(resultEl) resultEl.textContent = (answer === 'DOT') ? 'Correct!' : 'Incorrect. The answer is DOT.';
+        if(answer === 'DOT') markQuizCompleted('basics');
+    });
+}
+
+function startArchitectureQuizHandler() {
+    console.log('Starting architecture quiz...');
+    const container = document.getElementById('architectureQuiz');
+    if(!container) return;
+    container.innerHTML = `
+        <h4>Which component coordinates parachains?</h4>
+        <input type="radio" name="q1_arch" value="PVM"> PVM <br>
+        <input type="radio" name="q1_arch" value="Relay Chain"> Relay Chain <br>
+        <input type="radio" name="q1_arch" value="Wallet"> Wallet <br>
+        <button id="submitArchitectureQuiz" class="btn btn-secondary">Submit</button>
+        <div id="architectureQuizResult"></div>`;
+    document.getElementById('submitArchitectureQuiz')?.addEventListener('click', () => {
+        const ans = document.querySelector('input[name="q1_arch"]:checked')?.value;
+        const result = document.getElementById('architectureQuizResult');
+        if(result) result.textContent = (ans === 'Relay Chain') ? 'Correct!' : 'Incorrect. The answer is Relay Chain.';
+        if(ans === 'Relay Chain') markQuizCompleted('architecture');
+    });
+}
+
+function startPvmQuizHandler() {
+    console.log('Starting PVM quiz...');
+    const container = document.getElementById('pvmQuiz');
+    if(!container) return;
+    container.innerHTML = `
+        <h4>PVM is based on which ISA?</h4>
+        <input type="radio" name="q1_pvm" value="x86"> x86 <br>
+        <input type="radio" name="q1_pvm" value="RISC-V"> RISC-V <br>
+        <input type="radio" name="q1_pvm" value="ARM"> ARM <br>
+        <button id="submitPvmQuiz" class="btn btn-secondary">Submit</button>
+        <div id="pvmQuizResult"></div>`;
+    document.getElementById('submitPvmQuiz')?.addEventListener('click', () => {
+        const ans = document.querySelector('input[name="q1_pvm"]:checked')?.value;
+        const result = document.getElementById('pvmQuizResult');
+        if(result) result.textContent = (ans === 'RISC-V') ? 'Correct!' : 'Incorrect. The answer is RISC-V.';
+        if(ans === 'RISC-V') markQuizCompleted('pvm');
+    });
+}
+
+function startSmartContractsQuizHandler() {
+    console.log('Starting smart contracts quiz...');
+    const container = document.getElementById('smartContractsQuiz');
+    if(!container) return;
+    container.innerHTML = `
+        <h4>ink! contracts are written in?</h4>
+        <input type="radio" name="q1_sc" value="Solidity"> Solidity <br>
+        <input type="radio" name="q1_sc" value="Rust"> Rust <br>
+        <input type="radio" name="q1_sc" value="Go"> Go <br>
+        <button id="submitSmartContractsQuiz" class="btn btn-secondary">Submit</button>
+        <div id="smartContractsQuizResult"></div>`;
+    document.getElementById('submitSmartContractsQuiz')?.addEventListener('click', () => {
+        const ans = document.querySelector('input[name="q1_sc"]:checked')?.value;
+        const result = document.getElementById('smartContractsQuizResult');
+        if(result) result.textContent = (ans === 'Rust') ? 'Correct!' : 'Incorrect. The answer is Rust.';
+        if(ans === 'Rust') markQuizCompleted('smart-contracts');
+    });
+}
+
+function startInteroperabilityQuizHandler() {
+    console.log('Starting interoperability quiz...');
+    const container = document.getElementById('interoperabilityQuiz');
+    if(!container) return;
+    container.innerHTML = `
+        <h4>Which format enables cross-chain messaging?</h4>
+        <input type="radio" name="q1_inter" value="WASM"> WASM <br>
+        <input type="radio" name="q1_inter" value="XCM"> XCM <br>
+        <input type="radio" name="q1_inter" value="RPC"> RPC <br>
+        <button id="submitInteroperabilityQuiz" class="btn btn-secondary">Submit</button>
+        <div id="interoperabilityQuizResult"></div>`;
+    document.getElementById('submitInteroperabilityQuiz')?.addEventListener('click', () => {
+        const ans = document.querySelector('input[name="q1_inter"]:checked')?.value;
+        const result = document.getElementById('interoperabilityQuizResult');
+        if(result) result.textContent = (ans === 'XCM') ? 'Correct!' : 'Incorrect. The answer is XCM.';
+        if(ans === 'XCM') markQuizCompleted('interoperability');
+    });
+}
+
+function startParachainsQuizHandler() {
+    console.log('Starting parachains quiz...');
+    const container = document.getElementById('parachainsQuiz');
+    if(!container) return;
+    container.innerHTML = `
+        <h4>Parachains connect to which chain?</h4>
+        <input type="radio" name="q1_para" value="Beacon"> Beacon <br>
+        <input type="radio" name="q1_para" value="Relay Chain"> Relay Chain <br>
+        <input type="radio" name="q1_para" value="Side"> Side <br>
+        <button id="submitParachainsQuiz" class="btn btn-secondary">Submit</button>
+        <div id="parachainsQuizResult"></div>`;
+    document.getElementById('submitParachainsQuiz')?.addEventListener('click', () => {
+        const ans = document.querySelector('input[name="q1_para"]:checked')?.value;
+        const result = document.getElementById('parachainsQuizResult');
+        if(result) result.textContent = (ans === 'Relay Chain') ? 'Correct!' : 'Incorrect. The answer is Relay Chain.';
+        if(ans === 'Relay Chain') markQuizCompleted('parachains');
+    });
+}
+
+function startPalletsQuizHandler() {
+    console.log('Starting pallets quiz...');
+    const container = document.getElementById('palletsQuiz');
+    if(!container) return;
+    container.innerHTML = `
+        <h4>What are pallets in Substrate?</h4>
+        <input type="radio" name="q1_pallets" value="Wallets"> Wallets <br>
+        <input type="radio" name="q1_pallets" value="Reusable modules"> Reusable modules <br>
+        <input type="radio" name="q1_pallets" value="Consensus"> Consensus <br>
+        <button id="submitPalletsQuiz" class="btn btn-secondary">Submit</button>
+        <div id="palletsQuizResult"></div>`;
+    document.getElementById('submitPalletsQuiz')?.addEventListener('click', () => {
+        const ans = document.querySelector('input[name="q1_pallets"]:checked')?.value;
+        const result = document.getElementById('palletsQuizResult');
+        if(result) result.textContent = (ans === 'Reusable modules') ? 'Correct!' : 'Incorrect. The answer is Reusable modules.';
+        if(ans === 'Reusable modules') markQuizCompleted('pallets');
     });
 }
 
@@ -861,7 +997,6 @@ function startLearningModule(moduleId) {
     const moduleEl = document.getElementById(`module-${moduleId}-content`);
     if(moduleEl) moduleEl.style.display = 'block';
     else showErrorNotification(`Content for module ${moduleId} not found.`);
-    incrementUserProgress();
 }
 
 function handleNextModule(e) {
@@ -874,8 +1009,7 @@ function handleNextModule(e) {
 }
 
 function incrementUserProgress() {
-    const step = Math.ceil(100 / moduleSequence.length);
-    userProgress = Math.min(100, userProgress + step);
+    userProgress = Math.min(100, Math.round((completedQuizzes.size / QUIZZES.length) * 100));
     const circle = document.getElementById('learningProgressCircle');
     if(circle) updateProgressCircle(circle, userProgress);
     document.dispatchEvent(new CustomEvent('progress:save', { detail: userProgress }));
