@@ -244,6 +244,14 @@ img {
   margin: 0 auto var(--spacing-xl);
 }
 
+/* Buttons container in hero section */
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
 /* ===== Buttons ===== */
 .btn {
   display: inline-block;
@@ -395,6 +403,9 @@ img {
   display: flex;
   border-bottom: 2px solid var(--medium-gray);
   margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
 }
 
 .tab-button {
@@ -451,6 +462,29 @@ img {
 
 .explorer-search-results .error {
   color: var(--polkadot-pink);
+}
+
+/* Diagram container */
+.diagram {
+  overflow-x: auto;
+}
+
+/* Tables inside explorer sections */
+.explorer-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: var(--spacing-sm);
+  text-align: left;
+  word-break: break-all;
 }
 
 /* ===== Code Blocks ===== */
